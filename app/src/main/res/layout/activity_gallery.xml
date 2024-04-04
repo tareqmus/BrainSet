@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_200"
-    tools:context=".MainActivity">
+    tools:context=".Gallery">
 
     <ImageView
         android:id="@+id/imageView"
@@ -27,6 +27,7 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="53dp">
 
+
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
@@ -36,31 +37,41 @@
     </ScrollView>
 
 
-        <Button
-            android:id="@+id/choose_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/scrollView"
-            app:icon="@drawable/baseline_image_24"
-            android:layout_margin="3dp"
-            android:text="Select Image" />
+    <Button
+        android:id="@+id/choose_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollView"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp"
+        android:text="Select Image"
+        app:icon="@drawable/baseline_image_24" />
 
-        <Button
-            android:id="@+id/capture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/choose_image"
-            android:layout_margin="3dp"
-            android:src="@drawable/speech"
-            android:text="Camera" />
+    <Button
+        android:id="@+id/capture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choose_image"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp"
+        android:text="Camera"
+        android:src="@drawable/camera"/>
 
-        <Button
-            android:id="@+id/speech"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/capture"
-            android:layout_margin="3dp"
-            android:text="Speech" />
+    <Button
+        android:id="@+id/speech"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/capture"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp"
+        android:src="@drawable/speech"
+        android:text="Speech" />
 
         <Button
             android:id="@+id/copy"
@@ -68,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/speech"
             android:layout_margin="3dp"
+            android:src="@drawable/copy"
             android:text="Copy" />
 
         <Button
@@ -75,10 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/copy"
+            android:src="@drawable/clear"
             android:text="Clear"
             android:layout_margin="3dp"/>
-
-
-
 
 </RelativeLayout>

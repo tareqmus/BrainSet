@@ -3,15 +3,11 @@ package com.brainset.ocr;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -20,12 +16,10 @@ import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -38,8 +32,8 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import java.io.IOException;
 import java.util.Locale;
 
-// MainActivity class extends AppCompatActivity to have access to Android lifecycle methods and UI elements.
-public class MainActivity extends AppCompatActivity {
+// Gallery class extends AppCompatActivity to have access to Android lifecycle methods and UI elements.
+public class Gallery extends AppCompatActivity {
     // A constant to identify the request code for picking an image
     private static final int PICK_IMAGE = 123;
     private static final  int REQUEST_CODE = 22;
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Setting the content view to the layout defined in 'activity_main.xml'
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gallery);
 
         // Initializing the TextRecognizer with default options
         recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
@@ -76,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
         // Setting onClick listeners for buttons to handle user interactions
         captureBTN.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Scanner.class);
+            public void onClick(View view) {
+                Intent i = new Intent(Gallery.this, Scanner.class);
                 startActivity(i);
             }
         });
@@ -106,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 ClipboardManager clipboardManager =(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("Text", text);
                 clipboardManager.setPrimaryClip(clipData);
-                Toast.makeText(MainActivity.this, "Text Copied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Gallery.this, "Text Copied", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -190,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(Gallery.this, "Failed", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                     } catch (IOException e) {

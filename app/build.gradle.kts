@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -42,4 +43,11 @@ dependencies {
 
     //Image loading and caching library for Android focused on smooth scrolling (Advanced Image Viewer)
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+
+    //Firebase database
+    implementation("com.google.firebase:firebase-database:20.3.1")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 }
