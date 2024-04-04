@@ -27,6 +27,9 @@
         android:theme="@style/Theme.OCR"
         tools:targetApi="31">
         <activity
+            android:name=".Timer"
+            android:exported="false" />
+        <activity
             android:name=".Scanner"
             android:exported="false" />
         <activity
