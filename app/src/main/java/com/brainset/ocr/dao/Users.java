@@ -4,12 +4,10 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Users {
-    public String imei;
+    public String androidId;
 
     public int rewardsPoints;
     public HashMap<String, Scans> scans;
@@ -19,14 +17,14 @@ public class Users {
 
     }
 
-    public Users(String imei, int points, HashMap<String, Scans> scans){
-        this.imei = imei;
+    public Users(String androidId, int points, HashMap<String, Scans> scans){
+        this.androidId = androidId;
         this.rewardsPoints = points;
         this.scans = scans;
     }
 
-    public Users(String imei, int points){
-        this.imei = imei;
+    public Users(String androidId, int points){
+        this.androidId = androidId;
         this.rewardsPoints = points;
         this.scans = new HashMap<>();
 
@@ -51,12 +49,12 @@ public class Users {
         }
         //listener.onLoadComplete();
     }
-    public String getImei() {
-        return imei;
+    public String getAndroidId() {
+        return androidId;
     }
 
-    public void setImei(String imei) {
-        this.imei = imei;
+    public void setAndroidId(String androidId) {
+        this.androidId = androidId;
     }
 
     public int getRewardsPoints() {

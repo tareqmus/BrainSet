@@ -14,6 +14,8 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.core.Tag;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -40,7 +43,7 @@ public class Gallery extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     // Declaration of UI components
     TextView textView; // Display text extracted or any message
-    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN; // Buttons for various functionalities
+    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN; // Buttons for various functionalities
 
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
@@ -66,8 +69,17 @@ public class Gallery extends AppCompatActivity {
         copyBTN = findViewById(R.id.copy);
         captureBTN = findViewById(R.id.capture);
         imageView = findViewById(R.id.imageView);
+        timerBTN = findViewById(R.id.study_timer);
 
         // Setting onClick listeners for buttons to handle user interactions
+
+        timerBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent t = new Intent(Gallery.this, Timer.class);
+                startActivity(t);
+            }
+        });
         captureBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,6 +131,7 @@ public class Gallery extends AppCompatActivity {
             public void onInit(int i) {
                 if (i != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.US);
+
                 }
             }
         });
@@ -227,4 +240,5 @@ public class Gallery extends AppCompatActivity {
             }
         }
     }
+
 }
