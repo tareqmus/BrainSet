@@ -9,20 +9,19 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="156dp"
-        android:layout_height="54dp"
+        android:layout_width="147dp"
+        android:layout_height="35dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:src="@drawable/brainsetlogomain" />
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="385dp"
-        android:layout_height="188dp"
+        android:layout_width="347dp"
+        android:layout_height="157dp"
         android:layout_below="@id/imageView"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="53dp">
@@ -102,5 +101,17 @@
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="3dp"
         android:text="Timer" />
+    <Button
+        android:id="@+id/focus_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/study_timer"
+        android:src="@drawable/brain"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp"
+        android:text="Focus" />
+
 
 </RelativeLayout>

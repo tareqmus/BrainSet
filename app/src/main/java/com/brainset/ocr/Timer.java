@@ -24,7 +24,7 @@ public class Timer extends AppCompatActivity {
     EditText inputTime;
     CountDownTimer timer;
     Button start, pause, reset, resume;
-    long timeLeftInMillis; // Updated to be set based on user input
+    long timeLeftInMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

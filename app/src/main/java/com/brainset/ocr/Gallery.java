@@ -43,7 +43,7 @@ public class Gallery extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     // Declaration of UI components
     TextView textView; // Display text extracted or any message
-    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN; // Buttons for various functionalities
+    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN; // Buttons for various functionalities
 
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
@@ -70,14 +70,22 @@ public class Gallery extends AppCompatActivity {
         captureBTN = findViewById(R.id.capture);
         imageView = findViewById(R.id.imageView);
         timerBTN = findViewById(R.id.study_timer);
+        focusBTN = findViewById(R.id.focus_mode);
 
         // Setting onClick listeners for buttons to handle user interactions
 
+        focusBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent k = new Intent(Gallery.this, FocusMode.class);
+                startActivity(k);
+            }
+        });
         timerBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent t = new Intent(Gallery.this, Timer.class);
-                startActivity(t);
+                Intent j = new Intent(Gallery.this, Timer.class);
+                startActivity(j);
             }
         });
         captureBTN.setOnClickListener(new View.OnClickListener() {
