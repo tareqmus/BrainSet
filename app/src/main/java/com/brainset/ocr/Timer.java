@@ -1,5 +1,6 @@
 package com.brainset.ocr;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.MediaPlayer;
@@ -23,7 +24,7 @@ public class Timer extends AppCompatActivity {
     EditText inputTime;
     CountDownTimer timer;
     Button start, pause, reset, resume;
-    long timeLeftInMillis;
+    long timeLeftInMillis; // Updated to be set based on user input
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,19 @@ public class Timer extends AppCompatActivity {
                 resetTimer();
             }
         });
+
+        // Show recommendation popup
+        showRecommendationPopup();
+    }
+
+    private void showRecommendationPopup() {
+        new AlertDialog.Builder(this)
+                .setTitle("Study Recommendation")
+                .setMessage("Experts recommend studying for 25-30 minutes per session!")
+                // OK button to dismiss the dialog
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
     }
 
     private void resumeTimer() {
