@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class Users {
     public String androidId;
+    public String userName;
+    public String passwordHash;
 
     public int rewardsPoints;
     public HashMap<String, Scans> scans;
@@ -15,6 +17,13 @@ public class Users {
 
     public Users() {
 
+    }
+
+    public Users(String usrName, String passHash, int points, HashMap<String, Scans> scans){
+        this.userName = usrName;
+        this.passwordHash = passHash;
+        this.rewardsPoints = points;
+        this.scans = scans;
     }
 
     public Users(String androidId, int points, HashMap<String, Scans> scans){

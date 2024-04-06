@@ -36,6 +36,9 @@
             android:name=".Scanner"
             android:exported="false" />
         <activity
+            android:name=".CreateAcc"
+            android:exported="true"/>
+        <activity
             android:name=".Gallery"
             android:exported="true">
 
@@ -44,7 +47,7 @@
             android:name=".FocusMode"
             android:exported="false" />
         <activity
-            android:name=".LoadingScreen"
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

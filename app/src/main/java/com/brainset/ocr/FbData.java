@@ -40,9 +40,7 @@ public class FbData {
         void onError(DatabaseError error);
     }
     public void addNewUser(Users user){
-        Log.e("", usersRef.toString());
-        Log.e("", user.androidId);
-        usersRef.child(user.androidId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+        usersRef.child(user.userName).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Log.e("added", "Added user");
@@ -58,8 +56,8 @@ public class FbData {
     public void setUserScans(Users user, HashMap<String, Scans> scans){
         usersRef.child(user.androidId).child("scans").setValue(scans);
     }
-    public void getUser(String androidId, UserDataListener listener){
-        Task<DataSnapshot> t = usersRef.child(androidId).get();
+    public void getUser(String userName, UserDataListener listener){
+        Task<DataSnapshot> t = usersRef.child(userName).get();
         t.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
