@@ -33,13 +33,6 @@ public class FbData {
         String key = scansRef.push().getKey();
         Log.e("KEY", key);
     }
-    /*Uri imageUri = Uri.fromFile(image);
-    Uri audioUri = Uri.fromFile(audio);
-    StorageReference imageRef = imageFilesRef.child(UUID.randomUUID().toString() + ".jpg");
-    StorageReference audioRef = audioFilesRef.child(UUID.randomUUID().toString() + ".mp3");
-    UploadTask aTask, iTask;
-    aTask = audioRef.putFile(audioUri);
-    iTask = imageRef.putFile(imageUri);*/
 
 
     public interface UserDataListener {
@@ -47,10 +40,7 @@ public class FbData {
         void onError(DatabaseError error);
     }
     public void addNewUser(Users user){
-        Log.e("", usersRef.toString());
-        Log.e("", user.androidId);
-        //usersRef.child("hi").setValue(user);
-        usersRef.child(user.androidId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+        usersRef.child(user.userName).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Log.e("added", "Added user");
@@ -66,8 +56,8 @@ public class FbData {
     public void setUserScans(Users user, HashMap<String, Scans> scans){
         usersRef.child(user.androidId).child("scans").setValue(scans);
     }
-    public void getUser(String androidId, UserDataListener listener){
-        Task<DataSnapshot> t = usersRef.child(androidId).get();
+    public void getUser(String userName, UserDataListener listener){
+        Task<DataSnapshot> t = usersRef.child(userName).get();
         t.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -79,31 +69,6 @@ public class FbData {
                 }
             }
         });
-        /*usersRef.child(imei).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                gd.user = snapshot.getValue(Users.class);
-                Log.e("data", "dataChanged");
-                try {
-                    listener.onUserDataRetrieved(gd.user);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
-        /*Task<DataSnapshot> t = usersRef.child(imei).get();
-        t.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                Log.e("", task.toString());
-                Users user = t.getResult().getValue(Users.class);
-                listener.onUserDataRetrieved(user);
-            }
-        });*/
     }
 }

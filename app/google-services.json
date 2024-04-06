@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "48016906402",
+    "firebase_url": "https://brainset-a35eb-default-rtdb.firebaseio.com",
+    "project_id": "brainset-a35eb",
+    "storage_bucket": "brainset-a35eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48016906402:android:9e6e0bb641a1f2b600dffb",
+        "android_client_info": {
+          "package_name": "com.brainset.ocr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGO95qljEiCBD6GmmJHHhOfcYRL7e_Eds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
