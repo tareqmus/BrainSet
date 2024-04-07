@@ -1,7 +1,12 @@
 package com.brainset.ocr.dao;
 
+import static com.brainset.ocr.dao.Scans.gd;
+
 import android.util.Log;
 
+import com.brainset.ocr.Gallery;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +17,7 @@ public class Users {
     public String passwordHash;
 
     public int rewardsPoints;
-    public HashMap<String, Scans> scans;
+    public static HashMap<String, Scans> scans;
 
 
     public Users() {
@@ -41,9 +46,14 @@ public class Users {
     public interface LoadCompleteListener{
         public void onLoadComplete();
     }
-    public void saveScans(){
+    public static void saveScans(){
         for(Map.Entry<String, Scans> entry : scans.entrySet()){
-            entry.getValue().save();
+            //Log.e("Saving", "Saving " + entry.getValue().imageLink);
+            if (!entry.getValue().equals(new Scans("empty", gd.user.scans.get("empty").getImage()))){
+                Log.e("Saving", "Saving " + entry.getValue().imageLink);
+                //entry.getValue().save();
+            }
+
         }
     }
     public void loadScans() throws IOException {

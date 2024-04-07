@@ -52,6 +52,8 @@ public class Login extends AppCompatActivity {
                             return;
                         } else {
                             gd.user = user;
+                            db.getUserScans(gd.user);
+
                             //gd.user.loadScans();
                             if (gd.user.passwordHash.equals(p.hashPass(userPass))){
                                 Intent intent = new Intent(Login.this, Gallery.class);

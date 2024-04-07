@@ -5,21 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login">
+
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/light_bulb_logo1"
+        android:background="@android:color/transparent"/>
+    <TextView
+        android:id="@+id/textViewBrain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="BrainSet"
+        android:textColor="@color/teal_700"
+        android:textSize="43dp"
+        android:layout_below="@+id/imageViewLogo"/>
+
     <EditText
         android:id="@+id/editTextText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="text"
-        android:text="Username" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:text="Username"
+        android:layout_below="@+id/textViewBrain"/>
+
 
     <EditText
         android:id="@+id/editTextText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="text"
         android:text="Password"
@@ -29,6 +49,7 @@
         android:id="@+id/button7"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="Login"
         android:layout_below="@+id/editTextText2"/>
@@ -36,9 +57,12 @@
         android:id="@+id/buttonCreateAcc"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="Create Account"
         android:layout_below="@+id/button7"/>
+
+
 
 
 </RelativeLayout>
