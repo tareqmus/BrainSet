@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -54,7 +55,18 @@ public class FbData {
     }
 
     public void setUserScans(Users user, HashMap<String, Scans> scans){
-        usersRef.child(user.androidId).child("scans").setValue(scans);
+        usersRef.child(user.userName).child("scans").setValue(scans);
+    }
+
+    public void getUserScans(Users user){
+        Task<DataSnapshot> t = usersRef.child(user.userName).child("scans").get();
+        t.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                GenericTypeIndicator<HashMap<String, Scans>> genericTypeIndicator = new GenericTypeIndicator<HashMap<String, Scans>>() {};
+                gd.user.scans = task.getResult().getValue(genericTypeIndicator);
+            }
+        });
     }
     public void getUser(String userName, UserDataListener listener){
         Task<DataSnapshot> t = usersRef.child(userName).get();

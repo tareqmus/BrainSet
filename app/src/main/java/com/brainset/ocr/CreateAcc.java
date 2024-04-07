@@ -14,6 +14,7 @@ import com.brainset.ocr.dao.Users;
 import com.google.firebase.database.DatabaseError;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -30,8 +31,15 @@ public class CreateAcc extends AppCompatActivity {
         EditText usrPassConfirm = findViewById(R.id.editTextConfirm);
 
         Button createAcc = findViewById(R.id.buttonCreate);
+        Button back = findViewById(R.id.buttonBack);
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CreateAcc.this, Login.class);
+                startActivity(intent);
+            }
+        });
         createAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,18 +50,21 @@ public class CreateAcc extends AppCompatActivity {
                 db.getUser(userName, new FbData.UserDataListener() {
                     @Override
                     public void onUserDataRetrieved(Users user) throws IOException {
-                        Log.e("Create", userPassConfirm);
-                        Log.e("Create", userPass);
-                        Log.e("Create", pass.hashPass(userPass));
                         if (pass.isValidPass(userPass)){
                             if (userPass.equals(userPassConfirm)){
                                 if (user == null){
+                                    //create empty values to populate spot in database
                                     HashMap<String, Scans> emptyScans = new HashMap<>();
-                                    Scans emptyScan = new Scans("empty", new File(getFilesDir(), "my_text_file.txt"));
+                                    File empty = new File(getFilesDir(), "temp.txt");
+                                    FileWriter fw = new FileWriter(empty);
+                                    fw.write("empty");
+                                    fw.close();
+                                    Scans emptyScan = new Scans("empty", empty);
                                     emptyScans.put("empty", emptyScan);
                                     String hashedPass = pass.hashPass(userPass);
                                     Users newUser = new Users(userName, hashedPass, 0, emptyScans);
                                     db.addNewUser(newUser);
+                                    db.setUserScans(newUser, emptyScans);
                                     Intent intent = new Intent(CreateAcc.this, Login.class);
                                     startActivity(intent);
                                 } else {

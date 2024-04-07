@@ -12,16 +12,25 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.brainset.ocr.dao.Scans;
+import com.brainset.ocr.dao.Users;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,18 +41,23 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
 
 // Gallery class extends AppCompatActivity to have access to Android lifecycle methods and UI elements.
 public class Gallery extends AppCompatActivity {
+
     // A constant to identify the request code for picking an image
     private static final int PICK_IMAGE = 123;
     private static final  int REQUEST_CODE = 22;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    GlobalData gd = new GlobalData();
+    FbData db = new FbData();
     // Declaration of UI components
     TextView textView; // Display text extracted or any message
-    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN; // Buttons for various functionalities
+    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN, saveBTN; // Buttons for various functionalities
 
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
@@ -51,7 +65,32 @@ public class Gallery extends AppCompatActivity {
     TextRecognizer recognizer; // Recognizes text from images
     TextToSpeech textToSpeech; // Converts text to speech
     public Bitmap textImage; // Holds the bitmap of the selected image
+    //method to convert selected image bitmap to File
+    public File saveBitmap(Bitmap bitmap, String fileName) {
+        File imageFile = null;
+        try {
+            // Get the default pictures directory
+            imageFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName);
+            imageFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
 
+        // Save the Bitmap to the file
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream); // Change format and quality as needed
+            outputStream.flush();
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return imageFile;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +110,61 @@ public class Gallery extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         timerBTN = findViewById(R.id.study_timer);
         focusBTN = findViewById(R.id.focus_mode);
+        saveBTN = findViewById(R.id.saveButton);
+        //button to save scan
+        saveBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if an image has been selected
+                if (inputImage != null){
+                    LayoutInflater inflater = (LayoutInflater)
+                            getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View popupView = inflater.inflate(R.layout.save_popup, null);
+
+                    // create the popup window
+                    int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    boolean focusable = true; // lets taps outside the popup also dismiss it
+                    final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                    // show the popup window
+                    // which view you pass in doesn't matter, it is only used for the window tolken
+                    popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                    //set objects on pop up
+                    Button save = popupWindow.getContentView().findViewById(R.id.buttonSave);
+                    EditText eScanName = popupWindow.getContentView().findViewById(R.id.editTextSaveName);
+                    save.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String scanName = eScanName.getText().toString();
+                            Bitmap image = inputImage.getBitmapInternal();
+                            File imageFile = saveBitmap(image, scanName);
+                            imageFile.getTotalSpace();
+                            Scans scan = new Scans(scanName, imageFile);
+                            gd.user.scans.put(scanName, scan);
+                            db.setUserScans(gd.user, gd.user.scans);
+                            gd.user.scans.get(scanName).save(scanName);
+                            popupWindow.dismiss();
+                        }
+                    });
+                    // dismiss the popup window when touched
+                    popupView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            popupWindow.dismiss();
+                            return true;
+                        }
+                    });
+
+
+
+
+
+
+                }
+            }
+        });
 
         // Setting onClick listeners for buttons to handle user interactions
 

@@ -29,10 +29,14 @@ public class Scans {
     public File getImage(){
         return image;
     }
-    public void save(){
+
+    public void setImage(File image){
+
+    }
+    public void save(String scanName){
         FbData db = new FbData();
+        Log.e("SAVEIMAGE", gd.user.scans.get(scanName).getImage().toString() + " ");
         Uri imageUri = Uri.fromFile(image);
-        this.imageLink = UUID.randomUUID().toString();
         StorageReference imageRef = db.imageFilesRef.child(imageLink + ".jpg");
         UploadTask aTask, iTask;
         gd.user.scans.put(this.name, this);
@@ -63,7 +67,8 @@ public class Scans {
     public Scans(String name, File image){
         this.name = name;
         this.image = image;
-        this.imageLink = "earth";
+        Log.e("ScanMade", "scanMade " + this.image);
+        this.imageLink = UUID.randomUUID().toString();
     }
     public Scans(String name){
         this.name = name;
