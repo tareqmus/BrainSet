@@ -65,6 +65,7 @@ public class Gallery extends AppCompatActivity {
     TextRecognizer recognizer; // Recognizes text from images
     TextToSpeech textToSpeech; // Converts text to speech
     public Bitmap textImage; // Holds the bitmap of the selected image
+    //method to convert selected image bitmap to File
     public File saveBitmap(Bitmap bitmap, String fileName) {
         File imageFile = null;
         try {
@@ -114,8 +115,8 @@ public class Gallery extends AppCompatActivity {
         saveBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //if an image has been selected
                 if (inputImage != null){
-                    Log.e("EHEHEE", gd.user.scans.toString());
                     LayoutInflater inflater = (LayoutInflater)
                             getSystemService(LAYOUT_INFLATER_SERVICE);
                     View popupView = inflater.inflate(R.layout.save_popup, null);
@@ -129,6 +130,8 @@ public class Gallery extends AppCompatActivity {
                     // show the popup window
                     // which view you pass in doesn't matter, it is only used for the window tolken
                     popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                    //set objects on pop up
                     Button save = popupWindow.getContentView().findViewById(R.id.buttonSave);
                     EditText eScanName = popupWindow.getContentView().findViewById(R.id.editTextSaveName);
                     save.setOnClickListener(new View.OnClickListener() {
@@ -139,18 +142,9 @@ public class Gallery extends AppCompatActivity {
                             File imageFile = saveBitmap(image, scanName);
                             imageFile.getTotalSpace();
                             Scans scan = new Scans(scanName, imageFile);
-                            Log.e("ISER", imageFile.getName().toString() + " " + imageFile.getTotalSpace());
-                            if(imageFile.equals(null)){
-                                Log.e("null file", "file is null");
-                            }
-                            Log.e("SCANS", gd.user.scans.toString());
-                            Log.e("SCANNNNNaaa", scan.getImage().getName());
                             gd.user.scans.put(scanName, scan);
-                            Log.e("SCANNNNNN", gd.user.scans.get(scanName).getImage().getName());
                             db.setUserScans(gd.user, gd.user.scans);
                             gd.user.scans.get(scanName).save(scanName);
-                            //scan.save(scanName);
-
                             popupWindow.dismiss();
                         }
                     });

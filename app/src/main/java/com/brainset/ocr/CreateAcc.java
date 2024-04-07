@@ -50,12 +50,10 @@ public class CreateAcc extends AppCompatActivity {
                 db.getUser(userName, new FbData.UserDataListener() {
                     @Override
                     public void onUserDataRetrieved(Users user) throws IOException {
-                        Log.e("Create", userPassConfirm);
-                        Log.e("Create", userPass);
-                        Log.e("Create", pass.hashPass(userPass));
                         if (pass.isValidPass(userPass)){
                             if (userPass.equals(userPassConfirm)){
                                 if (user == null){
+                                    //create empty values to populate spot in database
                                     HashMap<String, Scans> emptyScans = new HashMap<>();
                                     File empty = new File(getFilesDir(), "temp.txt");
                                     FileWriter fw = new FileWriter(empty);
@@ -65,7 +63,6 @@ public class CreateAcc extends AppCompatActivity {
                                     emptyScans.put("empty", emptyScan);
                                     String hashedPass = pass.hashPass(userPass);
                                     Users newUser = new Users(userName, hashedPass, 0, emptyScans);
-
                                     db.addNewUser(newUser);
                                     db.setUserScans(newUser, emptyScans);
                                     Intent intent = new Intent(CreateAcc.this, Login.class);
