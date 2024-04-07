@@ -57,7 +57,7 @@ public class Gallery extends AppCompatActivity {
     FbData db = new FbData();
     // Declaration of UI components
     TextView textView; // Display text extracted or any message
-    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN, saveBTN; // Buttons for various functionalities
+    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN, saveBTN, resumeBTN, calendarBTN; // Buttons for various functionalities
 
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
@@ -111,8 +111,40 @@ public class Gallery extends AppCompatActivity {
         timerBTN = findViewById(R.id.study_timer);
         focusBTN = findViewById(R.id.focus_mode);
         saveBTN = findViewById(R.id.saveButton);
-        //button to save scan
-        saveBTN.setOnClickListener(new View.OnClickListener() {
+        pauseBTN = findViewById(R.id.pause);
+        resumeBTN = findViewById(R.id.resume);
+        calendarBTN = findViewById(R.id.calendar);
+
+
+
+
+        // Setting onClick listeners for buttons to handle user interactions
+        calendarBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Gallery.this, TaskCalendar.class);
+                startActivity(intent);
+            }
+        });
+        resumeBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = textView.getText().toString();
+                if (!text.isEmpty()) {
+                    textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+                }
+            }
+        });
+        pauseBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (textToSpeech.isSpeaking()) {
+                    textToSpeech.stop();
+
+                }
+            }
+        });
+        saveBTN.setOnClickListener(new View.OnClickListener() { //button to save scan
             @Override
             public void onClick(View view) {
                 //if an image has been selected
@@ -157,17 +189,9 @@ public class Gallery extends AppCompatActivity {
                         }
                     });
 
-
-
-
-
-
                 }
             }
         });
-
-        // Setting onClick listeners for buttons to handle user interactions
-
         focusBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,7 +300,7 @@ public class Gallery extends AppCompatActivity {
         }
         // Handle cancellation of the image selection process.
         else {
-            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
             super.onActivityResult(requestCode, resultCode, data);
         }
         // Process the selected image from the gallery.
@@ -291,17 +315,17 @@ public class Gallery extends AppCompatActivity {
 
                         // Proceed with ML Kit text recognition on the selected image.
                         Task<Text> result = recognizer.process(inputImage).addOnSuccessListener(new OnSuccessListener<Text>() {
-                                            @Override
-                                            public void onSuccess(Text text) {
-                                                ProcessTextBlock(text);
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(Gallery.this, "Failed", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                                    @Override
+                                    public void onSuccess(Text text) {
+                                        ProcessTextBlock(text);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(Gallery.this, "Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="text"
-        android:text="Save Name" />
+        android:hint="Save Name" />
 
     <Button
         android:id="@+id/buttonSave"

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageViewLogo"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:src="@drawable/light_bulb_logo1"
@@ -31,7 +31,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="text"
-        android:text="Username"
+        android:hint="Username"
         android:layout_below="@+id/textViewBrain"/>
 
 
@@ -42,7 +42,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="text"
-        android:text="Password"
+        android:hint="Password"
         android:layout_below="@+id/editTextText"/>
 
     <Button
