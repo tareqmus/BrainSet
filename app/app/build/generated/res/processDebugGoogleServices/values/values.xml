@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="firebase_database_url" translatable="false">https://brainset-a35eb-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">48016906402</string>
+    <string name="google_api_key" translatable="false">AIzaSyCGO95qljEiCBD6GmmJHHhOfcYRL7e_Eds</string>
+    <string name="google_app_id" translatable="false">1:48016906402:android:9e6e0bb641a1f2b600dffb</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCGO95qljEiCBD6GmmJHHhOfcYRL7e_Eds</string>
+    <string name="google_storage_bucket" translatable="false">brainset-a35eb.appspot.com</string>
+    <string name="project_id" translatable="false">brainset-a35eb</string>
+</resources>
