@@ -159,7 +159,7 @@ public class Timer extends AppCompatActivity {
     private void startTime(long time) {
         Log.d("TimerApp", "Starting timer with time: " + time + "ms");
         if (focusTimeEnabled){
-            FocusMode.inFocusMode = true;
+            GlobalData.user.inFocusMode = true;
             FocusMode.checkFocusMode(a);
             focusTime = 1;
         }
