@@ -95,6 +95,7 @@ public class Gallery extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FocusMode.checkFocusMode(this);
         // Setting the content view to the layout defined in 'activity_main.xml'
         setContentView(R.layout.activity_gallery);
 

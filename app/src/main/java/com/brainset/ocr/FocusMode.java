@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,19 +23,36 @@ import androidx.appcompat.app.AppCompatActivity;
 public class FocusMode extends AppCompatActivity {
 
         //declaring the buttons from activity_main.xml
-        Button b_enable, b_lock;
+        Button b_enable, b_lock, b_back;
+        //bool to hold whether in focus mode or not
+        public static boolean inFocusMode = false;
         //two variables below are used to activate device admin
         static final int RESULT_ENABLED = 1;
         DevicePolicyManager devicePolicyManager;
         //identifier for ACTIVITY in androidmanifest.xml
         ComponentName componentName;
-        private String adminPassword;
+        private static String adminPassword;
+        //method to check to see if focus mode it enabled it and adjust current activity properly
+        public static void checkFocusMode(Activity a){
+            if (inFocusMode == true){
+                View decorView = a.getWindow().getDecorView();
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+            } else {
+
+            }
+        }
+
         // method to exit fullscreenmode
         private void exitFullScreenMode() {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            inFocusMode = false;
         }
         //method used to enable enterfullscreenmode
         public void enterFullScreenMode() {
+            inFocusMode = true;
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -56,9 +74,11 @@ public class FocusMode extends AppCompatActivity {
         //the following class request the user to enable device admin
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            checkFocusMode(this);
             setContentView(R.layout.focus_mode);
             b_enable = findViewById(R.id.b_enable);
             b_lock = findViewById(R.id.b_lock);
+            b_back = findViewById(R.id.b_back);
             devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
             componentName = new ComponentName(FocusMode.this, Controller.class);
             boolean active = devicePolicyManager.isAdminActive(componentName);
@@ -69,11 +89,25 @@ public class FocusMode extends AppCompatActivity {
                 b_enable.setText("Enable");
                 b_lock.setVisibility(View.GONE);
             }
+            //if focus mode is enabled set button to unlock
+            if (inFocusMode){
+                b_lock.setText("Unlock");
+            }
+
+            //return back to gallery screen
+            b_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(FocusMode.this, Gallery.class);
+                    startActivity(intent);
+                }
+            });
             //after enabling device admin, this class removes the enable button.
             b_enable.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     boolean active = devicePolicyManager.isAdminActive(componentName);
+                    Log.e("ACTIVE", active + "");
                     if (active) {
                         devicePolicyManager.removeActiveAdmin(componentName);
                         b_enable.setText("Enable");
@@ -89,6 +123,11 @@ public class FocusMode extends AppCompatActivity {
             //class used to enter/exit fullscreen
             b_lock.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    Log.e("lockBtn", "Cliked");
+                    if (adminPassword != null){
+                        Log.e("adminPasss", adminPassword);
+                    }
+
                     if (b_lock.getText().equals("Lock")) {
                         // If it says "Lock", change it to "Unlock"
                         b_lock.setText("Unlock");
