@@ -1,5 +1,15 @@
 package com.brainset.ocr;
 
+
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -18,17 +28,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Timer extends AppCompatActivity {
-
+    Activity a = this;
     TextView countdownTimer;
     EditText inputTime;
     CountDownTimer timer;
-    Button start, pause, reset, resume;
+    Button start, pause, reset, resume, startFocusTime;
     long timeLeftInMillis;
+    boolean focusTimeEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.study_timer);
+        FocusMode.checkFocusMode(this);
 
         countdownTimer = findViewById(R.id.countdown_timer);
         inputTime = findViewById(R.id.editText); // EditText for user to input time
@@ -36,6 +48,7 @@ public class Timer extends AppCompatActivity {
         pause = findViewById(R.id.pause);
         reset = findViewById(R.id.reset);
         resume = findViewById(R.id.resume);
+        startFocusTime = findViewById(R.id.focusTimeBtn);
 
         // Add this onFocusChangeListener
         inputTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -48,7 +61,23 @@ public class Timer extends AppCompatActivity {
                 }
             }
         });
+        startFocusTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (startFocusTime.getText().toString().equals("FocusTimeDisabled")){
+                    startFocusTime.setText("FocusTimeEnabled");
+                    startFocusTime.setBackgroundColor(Color.parseColor("#15DB4D"));
+                    focusTimeEnabled = true;
+                    Log.e("ft", focusTimeEnabled + "");
+                } else {
+                    startFocusTime.setText("FocusTimeDisabled");
+                    startFocusTime.setBackgroundColor(Color.parseColor("#FF0000"));
+                    focusTimeEnabled = false;
+                }
 
+
+            }
+        });
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,9 +155,14 @@ public class Timer extends AppCompatActivity {
         Log.d("TimerApp", "Resuming timer with time left: " + timeLeftInMillis + "ms");
         startTime(timeLeftInMillis);
     }
-
+    private int focusTime = 0;
     private void startTime(long time) {
         Log.d("TimerApp", "Starting timer with time: " + time + "ms");
+        if (focusTimeEnabled){
+            FocusMode.inFocusMode = true;
+            FocusMode.checkFocusMode(a);
+            focusTime = 1;
+        }
         timer = new CountDownTimer(time, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -138,6 +172,10 @@ public class Timer extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                if (focusTime == 1){
+                    FocusMode.exitFocus(a);
+                    focusTime = 0;
+                }
                 Log.d("TimerApp", "Timer finished");
                 countdownTimer.setText("00:00:00");
 
