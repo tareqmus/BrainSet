@@ -22,6 +22,7 @@ import java.util.HashMap;
 public class CreateAcc extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         FbData db = new FbData();
         PasswordManager pass = new PasswordManager();
         super.onCreate(savedInstanceState);
