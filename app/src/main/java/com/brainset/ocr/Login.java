@@ -42,8 +42,6 @@ public class Login extends AppCompatActivity {
                 String userName = usrName.getText().toString();
                 String userPass = usrPass.getText().toString();
                 PasswordManager p = new PasswordManager();
-                Log.e("Login", userName);
-                Log.e("Login", userPass);
                 db.getUser(userName, new FbData.UserDataListener() {
                     @Override
                     public void onUserDataRetrieved(Users user) throws IOException {
