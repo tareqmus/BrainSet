@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseError;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 public class CreateAcc extends AppCompatActivity {
