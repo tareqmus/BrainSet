@@ -44,9 +44,12 @@ public class FocusMode extends AppCompatActivity {
 
             }
         }
-
+        public static void exitFocus(Activity a){
+            a.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            inFocusMode = false;
+        }
         // method to exit fullscreenmode
-        private void exitFullScreenMode() {
+        public void exitFullScreenMode() {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             inFocusMode = false;
         }
