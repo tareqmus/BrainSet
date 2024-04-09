@@ -62,6 +62,7 @@ public class Gallery extends AppCompatActivity {
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
     ImageView imageView;
+
     TextRecognizer recognizer; // Recognizes text from images
     TextToSpeech textToSpeech; // Converts text to speech
     public Bitmap textImage; // Holds the bitmap of the selected image
@@ -172,7 +173,7 @@ public class Gallery extends AppCompatActivity {
                             String scanName = eScanName.getText().toString();
                             Bitmap image = inputImage.getBitmapInternal();
                             File imageFile = saveBitmap(image, scanName);
-                            imageFile.getTotalSpace();
+
                             Scans scan = new Scans(scanName, imageFile);
                             gd.user.scans.put(scanName, scan);
                             db.setUserScans(gd.user, gd.user.scans);
