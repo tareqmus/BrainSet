@@ -22,12 +22,13 @@ import java.util.HashMap;
 
 public class FbData {
 
-    public static DatabaseReference usersRef, scansRef;
+    public static DatabaseReference usersRef, scansRef, tipRef;
     public StorageReference audioFilesRef, imageFilesRef;
     GlobalData gd = new GlobalData();
     public FbData(){
         usersRef = FirebaseDatabase.getInstance().getReference("users");
         scansRef = FirebaseDatabase.getInstance().getReference("scans");
+        tipRef = FirebaseDatabase.getInstance().getReference("tips");
         audioFilesRef = FirebaseStorage.getInstance().getReference("text/");
         imageFilesRef = FirebaseStorage.getInstance().getReference("images/");
         String key = scansRef.push().getKey();
