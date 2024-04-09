@@ -19,10 +19,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class FocusMode {
+public class FocusMode extends AppCompatActivity {
 
-
-    public class MainActivity extends AppCompatActivity {
         //declaring the buttons from activity_main.xml
         Button b_enable, b_lock;
         //two variables below are used to activate device admin
@@ -62,7 +60,7 @@ public class FocusMode {
             b_enable = findViewById(R.id.b_enable);
             b_lock = findViewById(R.id.b_lock);
             devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-            componentName = new ComponentName(MainActivity.this, Controller.class);
+            componentName = new ComponentName(FocusMode.this, Controller.class);
             boolean active = devicePolicyManager.isAdminActive(componentName);
             if (active) {
                 b_enable.setText("Disable");
@@ -187,4 +185,4 @@ public class FocusMode {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-}
+
