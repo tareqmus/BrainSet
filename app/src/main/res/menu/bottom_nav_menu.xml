@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/homeId"
+        android:title="Home"
+        android:icon="@drawable/baseline_home_24" />
+
+    <item
+        android:id="@+id/calendarId"
+        android:title="Calendar"
+        android:icon="@drawable/baseline_calendar" />
+
+    <item
+        android:id="@+id/AddScan"
+        android:title="" />
+
+    <item
+        android:id="@+id/clockId"
+        android:title="Clock"
+        android:icon="@drawable/baseline_clock" />
+
+    <item
+        android:id="@+id/settingsId"
+        android:title="Settings"
+        android:icon="@drawable/baseline_settings" />
+
+</menu>
