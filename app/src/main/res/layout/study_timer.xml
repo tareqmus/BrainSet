@@ -14,6 +14,12 @@
         android:backgroundTint="#00BCD4"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
+    <ImageView
+        android:id="@+id/backArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_arrow_back_24"/>
+
 
     <EditText
         android:id="@+id/editText"

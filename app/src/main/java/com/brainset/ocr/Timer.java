@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
@@ -24,6 +26,7 @@ import java.util.Locale;
 
 public class Timer extends AppCompatActivity {
     Activity a = this;
+    ImageView backArrow;
     TextView countdownTimer;
     EditText inputTime;
     CountDownTimer timer;
@@ -44,8 +47,16 @@ public class Timer extends AppCompatActivity {
         reset = findViewById(R.id.reset);
         resume = findViewById(R.id.resume);
         startFocusTime = findViewById(R.id.focusTimeBtn);
+        backArrow = findViewById(R.id.backArrow);
 
         // Add this onFocusChangeListener
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Timer.this, Gallery.class);
+                startActivity(intent);
+            }
+        });
         inputTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

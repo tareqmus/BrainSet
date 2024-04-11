@@ -44,6 +44,7 @@ public class TaskCalendar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FocusMode.checkFocusMode(this);
         setContentView(R.layout.activity_calendar); // Sets the layout for the activity
 
         // Initializing UI components

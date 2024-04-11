@@ -42,7 +42,7 @@
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="Create Account"
-        android:layout_below="@+id/editTextConfirm"/>
+        android:layout_below="@+id/passReq"/>
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="200dp"
@@ -51,6 +51,18 @@
         android:layout_weight="1"
         android:text="Back"
         android:layout_below="@+id/buttonCreate"/>
+
+    <TextView
+        android:id="@+id/passReq"
+        android:layout_width="218dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextConfirm"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:text="At least 1 character, and 1 number. With a minimum amount of 9 total characters. E.g (Password1) "
+        android:textColor="@color/black"
+        android:textSize="12sp" />
 
 
 </RelativeLayout>

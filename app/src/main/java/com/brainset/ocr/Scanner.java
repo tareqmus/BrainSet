@@ -48,6 +48,7 @@ public class Scanner extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FocusMode.checkFocusMode(this);
         setContentView(R.layout.activity_scanner);
 
         captureIV = findViewById(R.id.idIVCaptureImage);

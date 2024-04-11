@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Set;
 
 // Gallery class extends AppCompatActivity to have access to Android lifecycle methods and UI elements.
 public class Gallery extends AppCompatActivity {
@@ -56,8 +57,8 @@ public class Gallery extends AppCompatActivity {
     GlobalData gd = new GlobalData();
     FbData db = new FbData();
     // Declaration of UI components
-    TextView textView; // Display text extracted or any message
-    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN, saveBTN, resumeBTN, calendarBTN; // Buttons for various functionalities
+    EditText editText; // Display text extracted or any message
+    Button imageBTN, speechBTN, clearBTN, pauseBTN, captureBTN, timerBTN, focusBTN, saveBTN, calendarBTN, tweakttsBTN; // Buttons for various functionalities
 
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
@@ -104,23 +105,27 @@ public class Gallery extends AppCompatActivity {
 
         // Linking the UI components to their respective IDs in the layout file
         imageBTN = findViewById(R.id.choose_image);
-        textView = findViewById(R.id.text);
+        editText = findViewById(R.id.editText);
         speechBTN = findViewById(R.id.speech);
         clearBTN = findViewById(R.id.clear);
-        copyBTN = findViewById(R.id.copy);
         captureBTN = findViewById(R.id.capture);
         imageView = findViewById(R.id.imageView);
         timerBTN = findViewById(R.id.study_timer);
         focusBTN = findViewById(R.id.focus_mode);
         saveBTN = findViewById(R.id.saveButton);
-        pauseBTN = findViewById(R.id.pause);
-        resumeBTN = findViewById(R.id.resume);
+        pauseBTN = findViewById(R.id.stop);
         calendarBTN = findViewById(R.id.calendar);
-
-
+        tweakttsBTN = findViewById(R.id.tweaker);
 
 
         // Setting onClick listeners for buttons to handle user interactions
+        tweakttsBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Gallery.this, ttsModify.class);
+                startActivity(intent);
+            }
+        });
         calendarBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,15 +133,7 @@ public class Gallery extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        resumeBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = textView.getText().toString();
-                if (!text.isEmpty()) {
-                    textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-                }
-            }
-        });
+
         pauseBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,41 +225,46 @@ public class Gallery extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Converts the text in textView to speech
-                textToSpeech.speak(textView.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                textToSpeech.speak(editText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
-        copyBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Copies the text from textView to clipboard
-                String text = textView.getText().toString();
-                ClipboardManager clipboardManager =(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("Text", text);
-                clipboardManager.setPrimaryClip(clipData);
-                Toast.makeText(Gallery.this, "Text Copied", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         clearBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textView.setText("");// Clears the textView and shuts down the TextToSpeech to release resources
+                editText.setText("");// Clears the textView and shuts down the TextToSpeech to release resources
                 textToSpeech.shutdown(); // Stops tts from speaking
                 imageView.setImageResource(0); //Clears imageView
+                inputImage = null;
             }
         });
 
         // Initializes the TextToSpeech engine
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
-            public void onInit(int i) {
-                if (i != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.US);
-
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    Set<Voice> availableVoices = textToSpeech.getVoices();
+                    if (availableVoices != null) {
+                        Voice desiredVoice = null;
+                        for (Voice voice : availableVoices) {
+                            if (voice.getName().equals("es-MX-SMTf00")) {
+                                desiredVoice = voice;
+                                break;
+                            }
+                        }
+                        if (desiredVoice != null) {
+                            textToSpeech.setVoice(desiredVoice);
+                            Log.d("TTS", "Voice set to " + desiredVoice.getName());
+                        } else {
+                            Log.d("TTS", "Desired voice not found, using default.");
+                        }
+                    }
                 }
             }
         });
+
     }
 
 
@@ -346,7 +348,7 @@ public class Gallery extends AppCompatActivity {
         for(Text.TextBlock block : text.getTextBlocks()){
 
             String blockText = block.getText();
-            textView.append("\n");
+            editText.append("\n");
 
             Point[] blockCornerPoints = block.getCornerPoints();
             Rect blockFrame = block.getBoundingBox();
@@ -358,9 +360,9 @@ public class Gallery extends AppCompatActivity {
                 Rect lineFrame = line.getBoundingBox();
 
                 for(Text.Element element : line.getElements()){
-                    textView.append(" ");
+                    editText.append(" ");
                     String elementText = element.getText();
-                    textView.append(elementText);
+                    editText.append(elementText);
 
                     Point[] elementCornerPoints = element.getCornerPoints();
                     Rect elementFrame = element.getBoundingBox();
