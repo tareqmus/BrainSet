@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 public class FocusMode extends AppCompatActivity {
 
@@ -34,7 +35,7 @@ public class FocusMode extends AppCompatActivity {
         private static String adminPassword;
         //method to check to see if focus mode it enabled it and adjust current activity properly
         public static void checkFocusMode(Activity a){
-            if (GlobalData.user.inFocusMode == true){
+            if (GlobalData.user != null && GlobalData.user.inFocusMode == true){
                 View decorView = a.getWindow().getDecorView();
                 decorView.setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_IMMERSIVE

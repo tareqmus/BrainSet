@@ -1,13 +1,18 @@
 package com.brainset.ocr;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Defines the Calendar class extending AppCompatActivity to use Android's Activity features
-public class TaskCalendar extends AppCompatActivity {
+public class TaskCalendar extends Fragment {
     // Class variables for storing current selected date and indexing for saved dates
     private int currentYear = 0;
     private int currentMonth = 0;
@@ -33,15 +38,19 @@ public class TaskCalendar extends AppCompatActivity {
     private int[] days;
     private int[] months;
     private int[] years;
+    private View view;
+    private Activity a;
 
     // Lifecycle method called when the activity is created
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar); // Sets the layout for the activity
+        view = inflater.inflate(R.layout.activity_calendar, container, false);
+        a = this.getActivity();
+        //(R.layout.activity_calendar); // Sets the layout for the activity
 
         // Initializing UI components
-        final CalendarView calendarView = findViewById(R.id.calendarView);
+        final CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarStrings = new ArrayList<>();
         final int numberOfDays = 2000; // Predefined size for arrays to store date components
         days = new int[numberOfDays];
@@ -50,8 +59,8 @@ public class TaskCalendar extends AppCompatActivity {
 
         readInfo(); // Read saved calendar info from storage
 
-        final EditText textInput = findViewById(R.id.textInput);
-        final View dayContent = findViewById(R.id.dayContent);
+        final EditText textInput = view.findViewById(R.id.textInput);
+        final View dayContent = view.findViewById(R.id.dayContent);
 
         // Listener for date selection on the calendar
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -86,7 +95,7 @@ public class TaskCalendar extends AppCompatActivity {
         });
 
         // Button to save the text for the selected date
-        final Button saveTextBTN = findViewById(R.id.saveTextbtn);
+        final Button saveTextBTN = view.findViewById(R.id.saveTextbtn);
 
         // Listener for the save button
         saveTextBTN.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +130,7 @@ public class TaskCalendar extends AppCompatActivity {
         });
 
         // Button to reset the calendar view to today's date
-        final Button todayButton = findViewById(R.id.todaybtn);
+        final Button todayButton = view.findViewById(R.id.todaybtn);
 
         // Listener for the "Today" button
         todayButton.setOnClickListener(new View.OnClickListener() {
@@ -131,11 +140,14 @@ public class TaskCalendar extends AppCompatActivity {
                 calendarView.setDate(calendarView.getDate());
             }
         });
+
+        return view;
+
     }
 
     // Lifecycle method called when the activity goes into the background
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         saveInfo(); // Saves the calendar info to storage
     }
@@ -143,10 +155,10 @@ public class TaskCalendar extends AppCompatActivity {
     // Method to save calendar entries to internal storage
     private void saveInfo() {
         // Files for storing calendar data
-        File file = new File(this.getFilesDir(), "saved");
-        File daysFile = new File(this.getFilesDir(), "days");
-        File monthsFile = new File(this.getFilesDir(), "months");
-        File yearsFile = new File(this.getFilesDir(), "years");
+        File file = new File(a.getFilesDir(), "saved");
+        File daysFile = new File(a.getFilesDir(), "days");
+        File monthsFile = new File(a.getFilesDir(), "months");
+        File yearsFile = new File(a.getFilesDir(), "years");
 
         try {
             // Setup writers for each file
@@ -189,10 +201,10 @@ public class TaskCalendar extends AppCompatActivity {
     // Method to read saved calendar entries from internal storage
     private void readInfo() {
         // Files where the calendar data is stored
-        File file = new File(this.getFilesDir(), "saved");
-        File daysFile = new File(this.getFilesDir(), "days");
-        File monthsFile = new File(this.getFilesDir(), "months");
-        File yearsFile = new File(this.getFilesDir(), "years");
+        File file = new File(a.getFilesDir(), "saved");
+        File daysFile = new File(a.getFilesDir(), "days");
+        File monthsFile = new File(a.getFilesDir(), "months");
+        File yearsFile = new File(a.getFilesDir(), "years");
 
         if (!file.exists()) {
             return; // Exit if the main file doesn't exist

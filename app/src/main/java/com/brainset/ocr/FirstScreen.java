@@ -49,7 +49,7 @@ public class FirstScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(FirstScreen.this, Dashboard.class);
+                Intent intent = new Intent(FirstScreen.this, Login.class);
                 startActivity(intent);
                 finish();
             }
