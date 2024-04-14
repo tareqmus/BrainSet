@@ -54,7 +54,7 @@ public class Login extends AppCompatActivity {
 
                             //gd.user.loadScans();
                             if (gd.user.passwordHash.equals(p.hashPass(userPass))){
-                                Intent intent = new Intent(Login.this, Gallery.class);
+                                Intent intent = new Intent(Login.this, Dashboard.class);
                                 startActivity(intent);
                             } else {
                                 Log.e("Login", "Incorrect Password");

@@ -14,7 +14,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,33 +24,36 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Timer extends AppCompatActivity {
-    Activity a = this;
+public class Timer extends Fragment {
+    //Activity a = this;
     TextView countdownTimer;
     EditText inputTime;
     CountDownTimer timer;
     Button start, pause, reset, resume, startFocusTime;
     long timeLeftInMillis;
     boolean focusTimeEnabled = false;
-
+    View view;
+    Activity a;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.study_timer);
-        FocusMode.checkFocusMode(this);
+        view = inflater.inflate(R.layout.study_timer, container, false);
+        FocusMode.checkFocusMode(a);
 
-        countdownTimer = findViewById(R.id.countdown_timer);
-        inputTime = findViewById(R.id.editText); // EditText for user to input time
-        start = findViewById(R.id.start);
-        pause = findViewById(R.id.pause);
-        reset = findViewById(R.id.reset);
-        resume = findViewById(R.id.resume);
-        startFocusTime = findViewById(R.id.focusTimeBtn);
+        countdownTimer = view.findViewById(R.id.countdown_timer);
+        inputTime = view.findViewById(R.id.editText); // EditText for user to input time
+        start = view.findViewById(R.id.start);
+        pause = view.findViewById(R.id.pause);
+        reset = view.findViewById(R.id.reset);
+        resume = view.findViewById(R.id.resume);
+        startFocusTime = view.findViewById(R.id.focusTimeBtn);
+        a = this.getActivity();
 
         // Add this onFocusChangeListener
         inputTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -110,7 +115,8 @@ public class Timer extends AppCompatActivity {
                     }
                     startTime(timeLeftInMillis);
                 } else {
-                    Toast.makeText(Timer.this, "Please enter a valid time format (e.g., 10 seconds, 2 minutes, 1 hour).", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(a.getApplicationContext(), "Please enter a valid time format (e.g., 10 seconds, 2 minutes, 1 hour).", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -138,11 +144,12 @@ public class Timer extends AppCompatActivity {
         });
 
         // Show recommendation popup
-        showRecommendationPopup();
+        //showRecommendationPopup();
+        return view;
     }
 
     private void showRecommendationPopup() {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(a.getApplicationContext())
                 .setTitle("Study Recommendation")
                 .setMessage("Experts recommend studying for 25-30 minutes per session!")
                 // OK button to dismiss the dialog
@@ -159,7 +166,7 @@ public class Timer extends AppCompatActivity {
     private void startTime(long time) {
         Log.d("TimerApp", "Starting timer with time: " + time + "ms");
         if (focusTimeEnabled){
-            FocusMode.inFocusMode = true;
+            GlobalData.user.inFocusMode = true;
             FocusMode.checkFocusMode(a);
             focusTime = 1;
         }
@@ -179,8 +186,8 @@ public class Timer extends AppCompatActivity {
                 Log.d("TimerApp", "Timer finished");
                 countdownTimer.setText("00:00:00");
 
-                Toast.makeText(Timer.this, "Break Time", Toast.LENGTH_SHORT).show();
-                MediaPlayer alarm = MediaPlayer.create(Timer.this, R.raw.summitalarm);
+                Toast.makeText(a, "Break Time", Toast.LENGTH_SHORT).show();
+                MediaPlayer alarm = MediaPlayer.create(a, R.raw.summitalarm);
                 alarm.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {

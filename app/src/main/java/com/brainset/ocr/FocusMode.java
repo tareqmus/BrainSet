@@ -19,13 +19,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 public class FocusMode extends AppCompatActivity {
 
         //declaring the buttons from activity_main.xml
         Button b_enable, b_lock, b_back;
         //bool to hold whether in focus mode or not
-        public static boolean inFocusMode = false;
+
         //two variables below are used to activate device admin
         static final int RESULT_ENABLED = 1;
         DevicePolicyManager devicePolicyManager;
@@ -34,7 +35,7 @@ public class FocusMode extends AppCompatActivity {
         private static String adminPassword;
         //method to check to see if focus mode it enabled it and adjust current activity properly
         public static void checkFocusMode(Activity a){
-            if (inFocusMode == true){
+            if (GlobalData.user != null && GlobalData.user.inFocusMode == true){
                 View decorView = a.getWindow().getDecorView();
                 decorView.setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -46,16 +47,16 @@ public class FocusMode extends AppCompatActivity {
         }
         public static void exitFocus(Activity a){
             a.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            inFocusMode = false;
+            GlobalData.user.inFocusMode = false;
         }
         // method to exit fullscreenmode
         public void exitFullScreenMode() {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            inFocusMode = false;
+            GlobalData.user.inFocusMode = false;
         }
         //method used to enable enterfullscreenmode
         public void enterFullScreenMode() {
-            inFocusMode = true;
+            GlobalData.user.inFocusMode = true;
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -93,7 +94,7 @@ public class FocusMode extends AppCompatActivity {
                 b_lock.setVisibility(View.GONE);
             }
             //if focus mode is enabled set button to unlock
-            if (inFocusMode){
+            if (GlobalData.user.inFocusMode){
                 b_lock.setText("Unlock");
             }
 

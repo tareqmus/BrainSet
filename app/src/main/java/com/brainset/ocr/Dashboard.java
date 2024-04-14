@@ -5,17 +5,24 @@ import static android.text.TextUtils.replace;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.LayoutInflater;
+
+import android.util.Log;
+import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.Fragment;
 
@@ -42,11 +49,34 @@ public class Dashboard extends AppCompatActivity {
         transaction.commit();
     }
 
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.brainset.ocr.databinding.ActivityDashboardBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
+
+public class Dashboard extends AppCompatActivity {
+
+    public BottomNavigationView bottomNavigationView;
+    ActivityDashboardBinding binding;
+    public static Fragment home, calendar, timer, settings;
+
+    private void initFrags(){
+        home = new HomeFragment();
+        calendar = new TaskCalendar();
+        timer = new Timer();
+        settings = new HomeFragment();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
+        initFrags();
         setContentView(R.layout.activity_dashboard);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -54,6 +84,7 @@ public class Dashboard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         MeowBottomNavigation bottomNavigation = findViewById(R.id.meowBottomNavigation);
@@ -69,6 +100,46 @@ public class Dashboard extends AppCompatActivity {
         replace(new HomeFragment());
 
         bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+
+        bottomNavigationView = findViewById(R.id.bottomNavView);
+        binding = ActivityDashboardBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
+        binding.bottomNavView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                //home
+                case 2131296507:
+                    Log.e("here", "home selected");
+                    replaceFragment(home);
+                    break;
+                //calendar
+                case 2131296371:
+                    Log.e("here", "Cal selected");
+                    replaceFragment(calendar);
+                    break;
+                //timer
+                case 2131296394:
+                    Log.e("here", "Clock selected");
+                    replaceFragment(timer);
+                    break;
+                //settings
+                case 2131296704:
+                    Log.e("here", "Settings selected");
+                    replaceFragment(settings);
+                    break;
+
+            }
+
+
+
+            return true;
+        });
+
+        // Add Button
+        FloatingActionButton startButton = findViewById(R.id.fab);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
                 switch (model.getId()) {
@@ -102,7 +173,9 @@ public class Dashboard extends AppCompatActivity {
         startButton.setOnClickListener(v -> showBottomDialog());
 
         // Example of accessing BottomNavigationView
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavView);
+
+
+
         if (bottomNavigationView != null) {
             bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         }
@@ -129,4 +202,15 @@ public class Dashboard extends AppCompatActivity {
             Toast.makeText(Dashboard.this, "Create a short is Clicked", Toast.LENGTH_SHORT).show();
         });
     }
+
 }
+
+
+    public void replaceFragment(Fragment f){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.frame_layout, f);
+        ft.commit();
+    }
+}
+

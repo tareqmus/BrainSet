@@ -5,6 +5,7 @@ import static com.brainset.ocr.dao.Scans.gd;
 import android.util.Log;
 
 import com.brainset.ocr.Gallery;
+import com.google.firebase.database.Exclude;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class Users {
 
     public int rewardsPoints;
     public static HashMap<String, Scans> scans;
+    @Exclude
+    public boolean inFocusMode = false;
 
 
     public Users() {

@@ -138,7 +138,6 @@ public class Gallery extends AppCompatActivity {
             public void onClick(View v) {
                 if (textToSpeech.isSpeaking()) {
                     textToSpeech.stop();
-
                 }
             }
         });
