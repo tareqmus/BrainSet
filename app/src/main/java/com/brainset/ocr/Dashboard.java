@@ -1,19 +1,46 @@
 package com.brainset.ocr;
 
+import static android.text.TextUtils.replace;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class Dashboard extends AppCompatActivity {
+
+    protected final int home = 1;
+    protected final int calendar = 2;
+    protected final int pluscan = 3;
+    protected final int timer = 4;
+    protected final int settings = 5;
+
+    // Declare the replace method outside any method
+    private void replace(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment);
+        transaction.commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,21 +55,78 @@ public class Dashboard extends AppCompatActivity {
             return insets;
         });
 
-        // Add Button
-        FloatingActionButton startButton = findViewById(R.id.fab);
-        startButton.setOnClickListener(new View.OnClickListener() {
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        MeowBottomNavigation bottomNavigation = findViewById(R.id.meowBottomNavigation);
+        RelativeLayout main_layout;
+        bottomNavigation.add(new MeowBottomNavigation.Model(home, R.drawable.baseline_home_24));
+        bottomNavigation.add(new MeowBottomNavigation.Model(calendar, R.drawable.baseline_calendar));
+        bottomNavigation.add(new MeowBottomNavigation.Model(pluscan, R.drawable.baseline_add));
+        bottomNavigation.add(new MeowBottomNavigation.Model(timer, R.drawable.baseline_clock));
+        bottomNavigation.add(new MeowBottomNavigation.Model(settings, R.drawable.baseline_settings));
+
+        // Set the "Home" button as selected by default
+        bottomNavigation.show(home, true);
+        replace(new HomeFragment());
+
+        bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
-            public void onClick(View v) {
-                // Handle button click action here
-                Intent intent = new Intent(Dashboard.this, Gallery.class);
-                startActivity(intent);
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch (model.getId()) {
+                    case home:
+                        replace(new HomeFragment());
+                        break;
+                    case pluscan:
+                        // Navigate to Gallery activity
+                        Intent galleryIntent = new Intent(Dashboard.this, Gallery.class);
+                        startActivity(galleryIntent);
+                        break;
+                    case calendar:
+                        // Navigate to TaskCalendar activity
+                        replace(new CalendarFragment());
+                        break;
+                    case timer:
+                        // Navigate to Timer activity
+                        Intent timerIntent = new Intent(Dashboard.this, Timer.class);
+                        startActivity(timerIntent);
+                        break;
+                }
+                return null;
             }
         });
+
+
+
+        /*
+        // Add Button
+        FloatingActionButton startButton = findViewById(R.id.fab);
+        startButton.setOnClickListener(v -> showBottomDialog());
 
         // Example of accessing BottomNavigationView
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavView);
         if (bottomNavigationView != null) {
             bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         }
+
+         */
+    }
+
+    private void showBottomDialog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.bottomsheetdash, null);
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+
+        LinearLayout galleryLayout = view.findViewById(R.id.bottomsheetGallery);
+        LinearLayout cameraLayout = view.findViewById(R.id.bottomsheetCamera);
+
+        galleryLayout.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            Toast.makeText(Dashboard.this, "Upload a Video is clicked", Toast.LENGTH_SHORT).show();
+        });
+
+        cameraLayout.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            Toast.makeText(Dashboard.this, "Create a short is Clicked", Toast.LENGTH_SHORT).show();
+        });
     }
 }

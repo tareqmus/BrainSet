@@ -94,6 +94,50 @@
         android:textColor="#333333"
         android:text="Clear" />
 
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/speech"
+        android:layout_alignParentStart="true"
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginBottom="204dp"
+        android:src="@drawable/brain"
+        android:text="Save Scan"
+        android:textColor="#333333" />
+
+    <Button
+        android:id="@+id/pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginBottom="209dp"
+        android:layout_toEndOf="@+id/saveButton"
+        android:src="@drawable/brain"
+        android:text="Pause"
+        android:textColor="#333333" />
+
+    <Button
+        android:id="@+id/resume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/pause"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/pause"
+        android:src="@drawable/brain"
+        android:text="Resume"
+        android:textColor="#333333" />
+
+
+
     <Button
         android:id="@+id/study_timer"
         android:layout_width="wrap_content"
@@ -117,50 +161,16 @@
         android:text="Focus" />
 
     <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/focus_mode"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@id/focus_mode"
-        android:src="@drawable/brain"
-        android:textColor="#333333"
-        android:text="Save Scan" />
-
-    <Button
-        android:id="@+id/pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/study_timer"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/brain"
-        android:textColor="#333333"
-        android:text="Pause" />
-
-    <Button
-        android:id="@+id/resume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/pause"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@id/pause"
-        android:src="@drawable/brain"
-        android:textColor="#333333"
-        android:text="Resume" />
-
-    <Button
         android:id="@+id/calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/pause"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="122dp"
         android:src="@drawable/brain"
-        android:textColor="#333333"
-        android:text="Task Calendar" />
+        android:text="Task Calendar"
+        android:textColor="#333333" />
 
 
 </RelativeLayout>
