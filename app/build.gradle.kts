@@ -70,5 +70,7 @@ dependencies {
     //Image loading and caching library for Android focused on smooth scrolling (Advanced Image Viewer)
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
+    implementation ("com.etebarian:meow-bottom-navigation:1.2.0")
+
 
 }

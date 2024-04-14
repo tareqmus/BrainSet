@@ -9,5 +9,7 @@
         <item name="colorAccent">#FF9E00</item>
     </style>
 
+
+
     <style name="Theme.OCR" parent="Base.Theme.OCR" />
 </resources>

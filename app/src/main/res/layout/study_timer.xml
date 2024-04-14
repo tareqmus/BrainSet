@@ -44,6 +44,7 @@
         android:layout_below="@id/countdown_timer"
         android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
+        android:textColor="#333333"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -54,17 +55,21 @@
         android:textSize="18sp"
         android:layout_alignTop="@id/start"
         android:layout_toEndOf="@id/start"
+        android:textColor="#333333"
         android:layout_marginStart="16dp" />
 
     <Button
         android:id="@+id/resume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Resume"
-        android:textSize="18sp"
         android:layout_alignTop="@id/pause"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="61dp"
         android:layout_toEndOf="@id/pause"
-        android:layout_marginStart="16dp" />
+        android:text="Resume"
+        android:textColor="#333333"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/reset"
@@ -72,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/pause"
         android:layout_alignParentEnd="true"
-
+        android:textColor="#333333"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="145dp"
         android:text="Reset"
@@ -85,6 +90,7 @@
         android:layout_marginLeft="125dp"
         android:layout_marginTop="2dp"
         android:text="Start Focus Time"
+        android:textColor="#333333"
         android:textSize="18sp" />
 
 </RelativeLayout>

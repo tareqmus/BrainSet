@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#983232"
+    android:backgroundTint="#C34D4D"
     tools:context=".HomeFragment">
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fontFamily="@font/josefin_sans_light"
         android:text="BrainSet"
-        android:textSize="60sp"
-        android:fontFamily="@font/josefin_sans_light"/>
+        android:textSize="60sp" />
 
 </FrameLayout>
