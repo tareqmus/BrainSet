@@ -60,7 +60,7 @@ public class Users {
         }
     }
     public void loadScans() throws IOException {
-        Log.e("loading", scans.get("name").name);
+        //Log.e("loading", scans.get("name").name);
         for(Map.Entry<String, Scans> entry : scans.entrySet()){
             try {
                 Log.e("getting", entry.getValue().name);
