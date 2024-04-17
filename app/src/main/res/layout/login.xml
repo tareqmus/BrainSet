@@ -68,7 +68,4 @@
         android:textColor="#333333"
         android:layout_below="@+id/button7"/>
 
-
-
-
 </RelativeLayout>

@@ -34,10 +34,10 @@ public class Dashboard extends AppCompatActivity {
     public static Fragment home, calendar, timer, settings, userScans;
 
     private void initFrags(){
-        home = new HomeFragment();
+        home = new UserScansDisplay();
         calendar = new TaskCalendar();
         timer = new Timer();
-        settings = new HomeFragment();
+        settings = new ttsModify();
         userScans = new UserScansDisplay();
     }
     @Override
@@ -57,16 +57,16 @@ public class Dashboard extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavView);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        replaceFragment(new UserScansDisplay());
         binding.bottomNavView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.homeId){
-                replaceFragment(home);
+                replaceFragment(userScans);
             } else if (item.getItemId() == R.id.calendarId){
                 replaceFragment(calendar);
             } else if (item.getItemId() == R.id.clockId){
                 replaceFragment(timer);
             } else if (item.getItemId() == R.id.settingsId) {
-                replaceFragment(userScans);
+                replaceFragment(settings);
             }
             return true;
         });

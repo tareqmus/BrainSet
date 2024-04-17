@@ -28,7 +28,6 @@ public class Login extends AppCompatActivity {
         Button loginB = findViewById(R.id.button7);
         Button createAccB = findViewById(R.id.buttonCreateAcc);
 
-
         createAccB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,8 +78,6 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
-
-
 
 
     }

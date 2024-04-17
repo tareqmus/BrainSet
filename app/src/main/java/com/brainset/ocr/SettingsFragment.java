@@ -1,3 +1,5 @@
+package com.brainset.ocr;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +17,9 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.user_scan_list, container, false);
+        View view = inflater.inflate(R.layout.tweak_tts, container, false);
 
-        view = view.findViewById(R.id.setting);
         a = this.getActivity();
+        return view;
     }
 }
