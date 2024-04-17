@@ -41,10 +41,15 @@ public class Scans {
         UploadTask aTask, iTask;
         gd.user.scans.put(this.name, this);
         iTask = imageRef.putFile(imageUri);
+        Scans curr = this;
         iTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.e("Saved", "Scan SAVED!");
+                try {
+                    curr.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

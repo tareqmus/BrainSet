@@ -9,10 +9,12 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.brainset.ocr.dao.Scans;
 import com.brainset.ocr.dao.Users;
 import com.google.firebase.database.DatabaseError;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
     GlobalData gd = new GlobalData();
@@ -50,15 +52,21 @@ public class Login extends AppCompatActivity {
                             return;
                         } else {
                             gd.user = user;
-                            db.getUserScans(gd.user);
+                            db.getUserScans(gd.user, new FbData.ScanDataListener() {
+                                @Override
+                                public void onScansRetrieved(HashMap<String, Scans> scans) throws IOException {
+                                    gd.user.scans = scans;
+                                    gd.user.loadScans();
+                                    if (gd.user.passwordHash.equals(p.hashPass(userPass))){
+                                        Intent intent = new Intent(Login.this, Dashboard.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Log.e("Login", "Incorrect Password");
+                                    }
+                                }
+                            });
 
-                            //gd.user.loadScans();
-                            if (gd.user.passwordHash.equals(p.hashPass(userPass))){
-                                Intent intent = new Intent(Login.this, Dashboard.class);
-                                startActivity(intent);
-                            } else {
-                                Log.e("Login", "Incorrect Password");
-                            }
+
 
                         }
 

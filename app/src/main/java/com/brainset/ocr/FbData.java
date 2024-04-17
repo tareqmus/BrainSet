@@ -35,7 +35,9 @@ public class FbData {
         Log.e("KEY", key);
     }
 
-
+    public interface ScanDataListener {
+        void onScansRetrieved(HashMap<String, Scans> scans) throws IOException;
+    }
     public interface UserDataListener {
         void onUserDataRetrieved(Users user) throws IOException;
         void onError(DatabaseError error);
@@ -58,13 +60,19 @@ public class FbData {
         usersRef.child(user.userName).child("scans").setValue(scans);
     }
 
-    public void getUserScans(Users user){
+    public void getUserScans(Users user, ScanDataListener listener){
         Task<DataSnapshot> t = usersRef.child(user.userName).child("scans").get();
         t.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 GenericTypeIndicator<HashMap<String, Scans>> genericTypeIndicator = new GenericTypeIndicator<HashMap<String, Scans>>() {};
                 gd.user.scans = task.getResult().getValue(genericTypeIndicator);
+                //Log.e("CREATE DASH", GlobalData.user.scans.get("ScanTest").name);
+                try {
+                    listener.onScansRetrieved(gd.user.scans);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

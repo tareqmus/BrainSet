@@ -71,6 +71,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
     implementation ("com.etebarian:meow-bottom-navigation:1.2.0")
+    implementation ("com.etebarian:meow-bottom-navigation:1.2.0")
 
 
 }

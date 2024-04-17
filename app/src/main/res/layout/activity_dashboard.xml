@@ -1,34 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#F0F1F3"
     tools:context=".Dashboard">
 
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true" />
-
-    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
-        android:id="@+id/meowBottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:mbn_backgroundBottomColor="#ffffff"
-        app:mbn_circleColor="#ffffff"
-        app:mbn_countBackgroundColor="#ff6f00"
-
-        app:mbn_defaultIconColor="#333333"
-
-        app:mbn_selectedIconColor="#FF9E00"
-        app:mbn_shadowColor="#1f212121" />
-<!--
 
     <FrameLayout
         android:id="@+id/frame_layout"
@@ -41,16 +20,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:fabCradleMargin="15dp"
-        app:fabCradleRoundedCornerRadius="20dp">
+        app:fabCradleRoundedCornerRadius="20dp"
+        app:fabCradleVerticalOffset="5dp"
+        app:layout_anchorGravity="bottom">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/transparent_background"
             app:itemIconTint="@color/icon_color"
             app:itemTextColor="@color/icon_color"
-            android:layout_marginEnd="20dp"
             app:menu="@menu/bottom_nav_menu" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
@@ -62,8 +42,6 @@
         android:src="@drawable/baseline_add"
         app:backgroundTint="#FF9E00"
         app:fabCustomSize="70dp"
-        app:maxImageSize="40dp"
         app:layout_anchor="@id/bottomAppBar" />
--->
-</RelativeLayout>
 
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
