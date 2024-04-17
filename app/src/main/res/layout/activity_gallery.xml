@@ -7,29 +7,24 @@
     android:background="#F0F1F3"
     tools:context=".Gallery">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="203dp"
-        android:layout_height="124dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/brainsetlogomain"/>
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="389dp"
-        android:layout_height="152dp"
-        android:layout_below="@id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="417dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="13dp"
-        android:layout_marginBottom="8dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="53dp">
-        <TextView
-            android:id="@+id/text"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp">
+
+        <EditText
+            android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:fillViewport="true"
             android:textSize="20sp" />
     </ScrollView>
 
@@ -37,11 +32,10 @@
     <Button
         android:id="@+id/choose_image"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:layout_below="@id/scrollView"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="13dp"
         android:layout_marginEnd="8dp"
         android:text="Select Image"
         android:textColor="#333333"
@@ -49,65 +43,34 @@
 
 
     <Button
-        android:id="@+id/capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/choose_image"
-        android:layout_marginStart="98dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@id/choose_image"
-        android:textColor="#333333"
-        android:text="Camera" />
-
-    <Button
         android:id="@+id/speech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/choose_image"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_below="@+id/scrollView"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/choose_image"
         android:src="@drawable/speech"
-        android:textColor="#333333"
-        android:text="Speech" />
-
-    <Button
-        android:id="@+id/copy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/speech"
-        android:layout_toEndOf="@id/speech"
-        android:layout_marginStart="8dp"
-        android:src="@drawable/copy"
-        android:textColor="#333333"
-        android:text="Copy" />
-
+        android:text="Speech"
+        android:textColor="#333333" />
 
     <Button
         android:id="@+id/clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/copy"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="0dp"
-        android:layout_toEndOf="@id/copy"
+        android:layout_below="@+id/resume"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/saveButton"
         android:src="@drawable/clear"
-        android:textColor="#333333"
-        android:text="Clear" />
-
+        android:text="Clear"
+        android:textColor="#333333" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_below="@+id/speech"
+        android:layout_below="@+id/pause"
         android:layout_alignParentStart="true"
-
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="49dp"
-        android:layout_marginBottom="204dp"
+        android:layout_marginStart="13dp"
         android:src="@drawable/brain"
         android:text="Save Scan"
         android:textColor="#333333" />
@@ -116,11 +79,10 @@
         android:id="@+id/pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginBottom="209dp"
-        android:layout_toEndOf="@+id/saveButton"
+        android:layout_below="@+id/choose_image"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/brain"
         android:text="Pause"
         android:textColor="#333333" />
@@ -130,48 +92,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/pause"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/pause"
         android:src="@drawable/brain"
         android:text="Resume"
         android:textColor="#333333" />
-
-
-
-    <Button
-        android:id="@+id/study_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/speech"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/clock"
-        android:textColor="#333333"
-        android:text="Timer" />
-
-    <Button
-        android:id="@+id/focus_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/study_timer"
-        android:layout_toEndOf="@id/study_timer"
-        android:layout_marginStart="8dp"
-        android:src="@drawable/brain"
-        android:textColor="#333333"
-        android:text="Focus" />
-
-    <Button
-        android:id="@+id/calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pause"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="122dp"
-        android:src="@drawable/brain"
-        android:text="Task Calendar"
-        android:textColor="#333333" />
-
 
 </RelativeLayout>

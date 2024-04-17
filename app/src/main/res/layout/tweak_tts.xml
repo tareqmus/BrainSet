@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ttsModify">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/backArrow"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:text="Enter Text to Speech: "
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/sentence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/txtPitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pitch Rate"
+                android:textSize="20sp"
+                android:layout_below="@+id/sentence"
+                android:layout_marginTop="50dp"/>
+
+            <SeekBar
+                android:id="@+id/seekPitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtPitch"
+                android:layout_marginTop="10dp"
+                android:max="200"
+                android:progress="100" />
+
+            <TextView
+                android:id="@+id/txtSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Speed Rate"
+                android:layout_below="@+id/seekPitch"
+                android:textSize="20sp"/>
+
+            <SeekBar
+                android:id="@+id/seekSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/txtSpeed"
+                android:max="200"
+                android:progress="100"/>
+
+            <Button
+                android:id="@+id/speak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:text="Speak"
+                android:layout_below="@id/seekSpeed"/>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

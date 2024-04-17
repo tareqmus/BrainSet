@@ -52,7 +52,7 @@ public class Gallery extends AppCompatActivity {
     GlobalData gd = new GlobalData();
     FbData db = new FbData();
     // Declaration of UI components
-    TextView textView; // Display text extracted or any message
+    EditText editText; // Display text extracted or any message
     Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN, saveBTN, resumeBTN, calendarBTN; // Buttons for various functionalities
 
     // Declaration of variables for processing
@@ -100,34 +100,28 @@ public class Gallery extends AppCompatActivity {
 
         // Linking the UI components to their respective IDs in the layout file
         imageBTN = findViewById(R.id.choose_image);
-        textView = findViewById(R.id.text);
+        editText = findViewById(R.id.editText);
         speechBTN = findViewById(R.id.speech);
         clearBTN = findViewById(R.id.clear);
-        copyBTN = findViewById(R.id.copy);
-        captureBTN = findViewById(R.id.capture);
-        imageView = findViewById(R.id.imageView);
-        timerBTN = findViewById(R.id.study_timer);
-        focusBTN = findViewById(R.id.focus_mode);
+        //copyBTN = findViewById(R.id.copy);
+        //captureBTN = findViewById(R.id.capture);
+        //imageView = findViewById(R.id.imageView);
+        //timerBTN = findViewById(R.id.study_timer);
+        //focusBTN = findViewById(R.id.focus_mode);
         saveBTN = findViewById(R.id.saveButton);
         pauseBTN = findViewById(R.id.pause);
         resumeBTN = findViewById(R.id.resume);
-        calendarBTN = findViewById(R.id.calendar);
+        //calendarBTN = findViewById(R.id.calendar);
 
 
 
 
         // Setting onClick listeners for buttons to handle user interactions
-        calendarBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Gallery.this, TaskCalendar.class);
-                startActivity(intent);
-            }
-        });
+
         resumeBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = textView.getText().toString();
+                String text = editText.getText().toString();
                 if (!text.isEmpty()) {
                     textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
                 }
@@ -189,27 +183,7 @@ public class Gallery extends AppCompatActivity {
                 }
             }
         });
-        focusBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent k = new Intent(Gallery.this, FocusMode.class);
-                startActivity(k);
-            }
-        });
-        timerBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent j = new Intent(Gallery.this, Timer.class);
-                startActivity(j);
-            }
-        });
-        captureBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Gallery.this, Scanner.class);
-                startActivity(i);
-            }
-        });
+
 
         imageBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,28 +197,16 @@ public class Gallery extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Converts the text in textView to speech
-                textToSpeech.speak(textView.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-
-        copyBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Copies the text from textView to clipboard
-                String text = textView.getText().toString();
-                ClipboardManager clipboardManager =(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("Text", text);
-                clipboardManager.setPrimaryClip(clipData);
-                Toast.makeText(Gallery.this, "Text Copied", Toast.LENGTH_SHORT).show();
+                textToSpeech.speak(editText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
         clearBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textView.setText("");// Clears the textView and shuts down the TextToSpeech to release resources
+                editText.setText("");// Clears the textView and shuts down the TextToSpeech to release resources
                 textToSpeech.shutdown(); // Stops tts from speaking
-                imageView.setImageResource(0); //Clears imageView
+                //imageView.setImageResource(0); //Clears imageView
             }
         });
 
@@ -341,7 +303,7 @@ public class Gallery extends AppCompatActivity {
         for(Text.TextBlock block : text.getTextBlocks()){
 
             String blockText = block.getText();
-            textView.append("\n");
+            editText.append("\n");
 
             Point[] blockCornerPoints = block.getCornerPoints();
             Rect blockFrame = block.getBoundingBox();
@@ -353,9 +315,9 @@ public class Gallery extends AppCompatActivity {
                 Rect lineFrame = line.getBoundingBox();
 
                 for(Text.Element element : line.getElements()){
-                    textView.append(" ");
+                    editText.append(" ");
                     String elementText = element.getText();
-                    textView.append(elementText);
+                    editText.append(elementText);
 
                     Point[] elementCornerPoints = element.getCornerPoints();
                     Rect elementFrame = element.getBoundingBox();
