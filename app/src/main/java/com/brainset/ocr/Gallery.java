@@ -31,6 +31,7 @@ import com.brainset.ocr.dao.Scans;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -189,7 +190,7 @@ public class Gallery extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Method call to open the gallery and choose an image
-                OpenGallery();
+                showBottomDialog();
             }
         });
 
@@ -240,6 +241,27 @@ public class Gallery extends AppCompatActivity {
 
         // Start the activity to select an image from the gallery.
         startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    private void showBottomDialog(){
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.bottomsheetdash,null);
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.show();
+
+        LinearLayout galleryLayout = view.findViewById(R.id.bottomsheetGallery);
+        LinearLayout cameraLayout = view.findViewById(R.id.bottomsheetCamera);
+
+        galleryLayout.setOnClickListener(v ->{
+            bottomSheetDialog.dismiss();
+            OpenGallery();
+        });
+
+        cameraLayout.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            Intent intent = new Intent(Gallery.this, Scanner.class);
+            startActivity(intent);
+        });
     }
 
     @Override

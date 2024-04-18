@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/textScanTitle"
         android:layout_marginLeft="20dp"
+        android:textColor="@color/black"
         android:text="Delete"></Button>
 
 

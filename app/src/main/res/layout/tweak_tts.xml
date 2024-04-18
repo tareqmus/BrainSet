@@ -25,6 +25,7 @@
                 android:layout_below="@+id/backArrow"
                 android:layout_marginTop="40dp"
                 android:gravity="center"
+                android:textColor="@color/black"
                 android:text="Enter Text to Speech: "
                 android:textSize="20sp" />
 
@@ -41,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="Pitch Rate"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 android:layout_below="@+id/sentence"
                 android:layout_marginTop="50dp"/>
 
@@ -59,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Speed Rate"
+                android:textColor="@color/black"
                 android:layout_below="@+id/seekPitch"
                 android:textSize="20sp"/>
 
@@ -78,6 +81,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
                 android:text="Speak"
+                android:textColor="@color/black"
                 android:layout_below="@id/seekSpeed"/>
         </RelativeLayout>
     </ScrollView>

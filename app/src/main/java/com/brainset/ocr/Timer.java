@@ -143,7 +143,7 @@ public class Timer extends Fragment {
             }
         });
 
-        // Show recommendation popup
+        //Show recommendation popup
         //showRecommendationPopup();
         return view;
     }

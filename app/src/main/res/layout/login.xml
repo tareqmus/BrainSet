@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F1F3"
     tools:context=".Login">
 
     <ImageView
@@ -35,6 +36,7 @@
         android:ems="10"
         android:hint="Username"
         android:inputType="text"
+        android:textColor="@color/black"
         android:textColorHint="#6F333333" />
 
 
@@ -46,6 +48,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="Password"
+        android:textColor="@color/black"
         android:inputType="text"
         android:textColorHint="#70333333" />
 

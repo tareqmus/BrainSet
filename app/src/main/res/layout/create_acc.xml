@@ -42,6 +42,7 @@
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="Create Account"
+        android:textColor="@color/black"
         android:layout_below="@+id/editTextConfirm"/>
     <Button
         android:id="@+id/buttonBack"
@@ -50,6 +51,7 @@
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
         android:text="Back"
+        android:textColor="@color/black"
         android:layout_below="@+id/buttonCreate"/>
 
 
