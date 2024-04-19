@@ -101,7 +101,7 @@ public class ttsModify extends Fragment implements TextToSpeech.OnInitListener {
 
     public void onInit(int status) {
         if(status == TextToSpeech.SUCCESS){
-            engine.setLanguage(Locale.CHINESE);
+            engine.setLanguage(Locale.US);
         }
 
     }

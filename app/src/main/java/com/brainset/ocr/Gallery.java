@@ -1,16 +1,24 @@
 package com.brainset.ocr;
 
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,11 +59,13 @@ public class Gallery extends AppCompatActivity {
     private static final int PICK_IMAGE = 123;
     private static final  int REQUEST_CODE = 22;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private int lastSpokenIndex = -1; // Initialize to -1 indicating no segment has been spoken yet.
+    private String[] textSegments;
     GlobalData gd = new GlobalData();
     FbData db = new FbData();
     // Declaration of UI components
     EditText editText; // Display text extracted or any message
-    Button imageBTN, speechBTN, clearBTN, copyBTN, pauseBTN, captureBTN, timerBTN, focusBTN, saveBTN, resumeBTN, calendarBTN; // Buttons for various functionalities
+    Button imageBTN, speechBTN, clearBTN, pauseBTN, focusBTN, saveBTN, resumeBTN; // Buttons for various functionalities
 
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
@@ -104,15 +115,11 @@ public class Gallery extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         speechBTN = findViewById(R.id.speech);
         clearBTN = findViewById(R.id.clear);
-        //copyBTN = findViewById(R.id.copy);
-        //captureBTN = findViewById(R.id.capture);
-        //imageView = findViewById(R.id.imageView);
-        //timerBTN = findViewById(R.id.study_timer);
         //focusBTN = findViewById(R.id.focus_mode);
         saveBTN = findViewById(R.id.saveButton);
         pauseBTN = findViewById(R.id.pause);
         resumeBTN = findViewById(R.id.resume);
-        //calendarBTN = findViewById(R.id.calendar);
+
 
 
 
@@ -122,9 +129,10 @@ public class Gallery extends AppCompatActivity {
         resumeBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = editText.getText().toString();
-                if (!text.isEmpty()) {
-                    textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+                if (lastSpokenIndex >= 0 && lastSpokenIndex + 1 < textSegments.length) {
+                    applyTTSConfig(); // Apply pitch and speed settings from SharedPreferences
+                    // Start speaking from the next segment
+                    playAndHighlightText(textSegments, lastSpokenIndex + 1);
                 }
             }
         });
@@ -133,9 +141,11 @@ public class Gallery extends AppCompatActivity {
             public void onClick(View v) {
                 if (textToSpeech.isSpeaking()) {
                     textToSpeech.stop();
+                    // Do not reset lastSpokenIndex here. It should retain the value of the last spoken segment.
                 }
             }
         });
+
         saveBTN.setOnClickListener(new View.OnClickListener() { //button to save scan
             @Override
             public void onClick(View view) {
@@ -197,32 +207,135 @@ public class Gallery extends AppCompatActivity {
         speechBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Converts the text in textView to speech
-                textToSpeech.speak(editText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+                String fullText = editText.getText().toString();
+                String[] sentences = fullText.split("\\. ");
+                lastSpokenIndex = -1; // Reset here as well
+                applyTTSConfig(); // Apply pitch and speed settings from SharedPreferences
+                playAndHighlightText(sentences, 0);
             }
         });
 
         clearBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editText.setText("");// Clears the textView and shuts down the TextToSpeech to release resources
-                textToSpeech.shutdown(); // Stops tts from speaking
-                //imageView.setImageResource(0); //Clears imageView
+                editText.setText(""); // Clears the textView
+                lastSpokenIndex = -1; // Reset the last spoken index
+                // Stops tts from speaking and clears resources
+                if (textToSpeech != null) {
+                    textToSpeech.stop();
+                    textToSpeech.shutdown();
+                }
             }
         });
 
         // Initializes the TextToSpeech engine
+        // Initializes the TextToSpeech engine
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
-            public void onInit(int i) {
-                if (i != TextToSpeech.ERROR) {
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.US);
+                    applyTTSConfig(); // Apply pitch and speed settings after initialization
+                    // Setup UtteranceProgressListener here
+                    textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            // Not used here, but useful for logging or custom logic
+                        }
 
+                        @Override
+                        public void onDone(String utteranceId) {
+                            int nextIndex = Integer.parseInt(utteranceId) + 1;
+                            lastSpokenIndex = Integer.parseInt(utteranceId); // Update lastSpokenIndex
+                            if (nextIndex < textSegments.length) {
+                                runOnUiThread(() -> playAndHighlightText(textSegments, nextIndex));
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+                            // Handle TTS errors here
+                        }
+                    });
                 }
             }
         });
+
     }
 
+    private void applyTTSConfig() {
+        SharedPreferences prefs = getSharedPreferences("TTSConfig", MODE_PRIVATE);
+        float pitch = prefs.getFloat("pitchRate", 1.0f); // Default pitch rate
+        float speed = prefs.getFloat("speedRate", 1.0f); // Default speed rate
+
+        if (textToSpeech != null) {
+            textToSpeech.setPitch(pitch);
+            textToSpeech.setSpeechRate(speed);
+        }
+    }
+
+
+    private void playAndHighlightText(String[] segments, int index) {
+        textSegments = segments; // Update the class member variable
+        if (index >= segments.length) return; // Stop condition
+
+        String segment = segments[index];
+        // Unique ID for each segment
+        String utteranceId = String.valueOf(index);
+
+        // Start speaking
+        textToSpeech.speak(segment, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
+
+        // Highlight text
+        highlightText(segment);
+    }
+
+    private void highlightText(String textToHighlight) {
+        String fullText = editText.getText().toString();
+        int start = fullText.indexOf(textToHighlight);
+        if (start >= 0) {
+            int end = start + textToHighlight.length();
+            SpannableString spannableString = new SpannableString(fullText);
+            // Example highlighting using background color. Customize as needed.
+            spannableString.setSpan(new BackgroundColorSpan(Color.YELLOW), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            editText.setText(spannableString);
+        }
+    }
+    private final BroadcastReceiver screenOffReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+                if (textToSpeech != null && textToSpeech.isSpeaking()) {
+                    textToSpeech.stop();
+                    // Optionally, also reset your TTS playback state here, similar to what you do in the pause button's onClickListener.
+                }
+            }
+        }
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        registerReceiver(screenOffReceiver, filter);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (textToSpeech != null && textToSpeech.isSpeaking()) {
+            textToSpeech.stop();
+        }
+        unregisterReceiver(screenOffReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
 
 
     // Initializes the process to open the gallery and allows the user to select an image for scanning.
