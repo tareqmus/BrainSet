@@ -49,8 +49,9 @@
         android:ems="10"
         android:hint="Password"
         android:textColor="@color/black"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:textColorHint="#70333333" />
+
 
     <Button
         android:id="@+id/button7"
