@@ -233,7 +233,7 @@ public class Gallery extends AppCompatActivity {
             }
         });
 
-        // Initializes the TextToSpeech engine
+
         // Initializes the TextToSpeech engine
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -245,7 +245,7 @@ public class Gallery extends AppCompatActivity {
                     textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                         @Override
                         public void onStart(String utteranceId) {
-                            // Not used here, but useful for logging or custom logic
+
                         }
 
                         @Override

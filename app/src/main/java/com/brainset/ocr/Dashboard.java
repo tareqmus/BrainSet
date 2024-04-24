@@ -102,12 +102,13 @@ public class Dashboard extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavView);
 
 
-
+        // Method to replace the current fragment displayed in the frame layout
         if (bottomNavigationView != null) {
             bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         }
     }
 
+    // Method to replace the current fragment displayed in the frame layout
     public void replaceFragment(Fragment f){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

@@ -1,5 +1,6 @@
 package com.brainset.ocr;
 
+// Import statements to include necessary Android libraries and third-party packages
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -33,29 +34,36 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import java.io.IOException;
 import java.util.Locale;
 
+// MainActivity which serves as the main entry point of the app
 public class Scanner extends AppCompatActivity {
 
+    // Declare variables for the UI components and OCR elements
     InputImage inputImage;
     TextRecognizer recognizer;
     TextToSpeech textToSpeech;
     private ImageView captureIV;
     private TextView resultTV;
-    private Button snapBtn, detectBtn,speechBtn, clearBtn;
+    private Button snapBtn, detectBtn, speechBtn, clearBtn;
     private Bitmap imageBitmap;
 
+    // Constants to manage image capture intents
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE = 123;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
+        // Bind UI elements with their IDs
         captureIV = findViewById(R.id.idIVCaptureImage);
         resultTV = findViewById(R.id.idTVDetectedText);
         snapBtn = findViewById(R.id.idButtonSnap);
         detectBtn = findViewById(R.id.idButtonDetect);
         speechBtn = findViewById(R.id.speech);
         clearBtn = findViewById(R.id.clear);
+
+        // Initialize TextToSpeech
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
@@ -64,21 +72,26 @@ public class Scanner extends AppCompatActivity {
                 }
             }
         });
+
+        // Button to clear the text view and shutdown TextToSpeech
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Clear the text from textView
                 resultTV.setText("");
                 textToSpeech.shutdown();
                 captureIV.setImageResource(0);
             }
         });
+
+        // Button to initiate speech output
         speechBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 textToSpeech.speak(resultTV.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
+
+        // Button to detect text from the captured image
         detectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +99,7 @@ public class Scanner extends AppCompatActivity {
             }
         });
 
+        // Button to capture an image using device camera
         snapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,111 +112,61 @@ public class Scanner extends AppCompatActivity {
         });
     }
 
-    //Permission Method
+    // Check if camera permission is granted
     private boolean CheckPermission(){
         int cameraPermission = ContextCompat.checkSelfPermission(getApplicationContext(),CAMERA_SERVICE);
         return cameraPermission == PackageManager.PERMISSION_GRANTED;
     }
+
+    // Request camera permission
     private void RequestPermission(){
         int PERMISSION_CODE = 200;
-        ActivityCompat.requestPermissions(this, new String[]{
-                android.Manifest.permission.CAMERA
-        },PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, PERMISSION_CODE);
     }
+
+    // Intent to capture an image
     private void CaptureImage() {
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePicture.resolveActivity(getPackageManager())!= null) {
             startActivityForResult(takePicture,REQUEST_IMAGE_CAPTURE);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults.length > 0){
-            boolean cameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-            if(cameraPermission){
-                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                CaptureImage();
-            }else {
-                Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
-            }
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            CaptureImage();
+        } else {
+            Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
-            captureIV.setImageBitmap((imageBitmap));
-            if (requestCode == PICK_IMAGE) {
-
-                if (data != null) {
-
-                    byte[] byteArray = new byte[0];
-                    String filePath = null;
-
-                    try {
-                        try {
-                            inputImage = InputImage.fromFilePath(this, data.getData());
-                            Bitmap resultUri = inputImage.getBitmapInternal();
-
-                            Glide.with(Scanner.this)
-                                    .load(resultUri)
-                                    .into(captureIV);
-
-                            // Process the Image
-                            Task<Text> result =
-                                    recognizer.process(inputImage)
-                                            .addOnSuccessListener(new OnSuccessListener<Text>() {
-                                                @Override
-                                                public void onSuccess(Text text) {
-                                                    DetectText();
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Toast.makeText(Scanner.this, "Failed", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    } catch (RuntimeException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
+            captureIV.setImageBitmap(imageBitmap);
         }
     }
 
+    // Process image data to detect text
     private void DetectText() {
         InputImage image = InputImage.fromBitmap(imageBitmap,0);
         TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         Task<Text> result = recognizer.process(image).addOnSuccessListener(new OnSuccessListener<Text>() {
             @Override
             public void onSuccess(Text text) {
-                StringBuilder result = new StringBuilder();
+                StringBuilder resultText = new StringBuilder();
                 for (Text.TextBlock block : text.getTextBlocks()){
                     String blockText = block.getText();
-                    Point[] blockCornerPoint = block.getCornerPoints();
-                    Rect blockFrame = block.getBoundingBox();
-
-                    for(Text.Line line : block.getLines()){
-                        String lineText = line.getText();
-                        Point[] lineCornerPoint = line.getCornerPoints();
-                        Rect lineRect = line.getBoundingBox();
-
-                        for(Text.Element element : line.getElements()){
-                            String elementText = element.getText();
-                            result.append(elementText);
-                        }
-                        // Displaying the results
-                        resultTV.setText(blockText);
-                    }
+                    resultText.append(blockText).append("\n");
                 }
+                // Set the text to TextView
+                resultTV.setText(resultText.toString());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
