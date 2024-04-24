@@ -40,7 +40,8 @@
 
         <activity
             android:name=".Dashboard"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".TaskCalendar"
             android:exported="false" />

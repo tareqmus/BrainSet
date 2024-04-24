@@ -22,15 +22,17 @@
         app:fabCradleMargin="15dp"
         app:fabCradleRoundedCornerRadius="20dp"
         app:fabCradleVerticalOffset="5dp"
-        app:layout_anchorGravity="bottom">
+        app:contentInsetStart="0dp"
+        >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/transparent_background"
             app:itemIconTint="@color/icon_color"
             app:itemTextColor="@color/icon_color"
+            app:elevation="0dp"
             app:menu="@menu/bottom_nav_menu" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
