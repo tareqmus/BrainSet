@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_shade_1"
+    android:background="#F0F1F3"
     tools:context=".Scanner">
 
     <ImageView
@@ -25,9 +25,9 @@
         android:layout_marginBottom="20dp"
         android:gravity="center"
         android:padding="4dp"
-        android:text="Your result appear here"
+        android:text="Your result appears here"
         android:textAlignment="center"
-        android:textColor="@color/yellow"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -40,6 +40,7 @@
         android:layout_below="@id/idTVDetectedText"
         android:layout_marginTop="20dp"
         android:text="Snap"
+        android:textColor="#333333"
         android:textAllCaps="false"
         app:backgroundTint="@color/yellow"
         />
@@ -53,6 +54,7 @@
         android:layout_below="@id/idButtonSnap"
         android:layout_marginTop="20dp"
         android:text="Detect"
+        android:textColor="#333333"
         android:textAllCaps="false"
         app:backgroundTint="@color/yellow"
         />
@@ -66,6 +68,7 @@
         android:layout_below="@id/idButtonDetect"
         android:layout_marginTop="20dp"
         android:text="Speak"
+        android:textColor="#333333"
         android:textAllCaps="false"
         app:backgroundTint="@color/yellow"
         />
@@ -78,6 +81,7 @@
         android:layout_below="@id/speech"
         android:layout_marginTop="20dp"
         android:text="Clear"
+        android:textColor="#333333"
         android:textAllCaps="false"
         app:backgroundTint="@color/yellow"
         />

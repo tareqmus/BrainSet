@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class FirstScreen extends AppCompatActivity {
 
+    // Constant to hold the duration of the splash screen display
     private static int SPLASH_SCREEN = 3500;
 
     Animation topAnim, bottomAnim;
@@ -30,7 +31,9 @@ public class FirstScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Set the activity to full-screen to hide the status bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // Enables edge-to-edge display where UI components can extend into the window insets
         EdgeToEdge.enable(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -41,6 +44,7 @@ public class FirstScreen extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_first_screen);
+        // Apply padding to the main view to accommodate system bars, ensuring UI elements are not obscured
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -65,6 +69,6 @@ public class FirstScreen extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, SPLASH_SCREEN);
+        }, SPLASH_SCREEN); // Delay time in milliseconds
     }
 }

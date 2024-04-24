@@ -21,9 +21,9 @@ import java.util.Locale;
 public class Timer extends Fragment {
     TextView countdownTimer;
     Button start, pause, reset, resume, startFocusTime;
-    CountDownTimer timer;
-    long timeLeftInMillis;
-    boolean focusTimeEnabled = false;
+    CountDownTimer timer; // Android class to handle countdown functionality
+    long timeLeftInMillis; // Stores time left in miliseconds
+    boolean focusTimeEnabled = false; // Flag to toggle focus mode
     View view;
     Activity a;
 
@@ -34,16 +34,18 @@ public class Timer extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.study_timer, container, false);
-        FocusMode.checkFocusMode(a);
+        FocusMode.checkFocusMode(a); // Get a reference to the parent activity
+        a = this.getActivity(); // Check and set focus mode based on current settings
 
+        // Initialize UI components
         countdownTimer = view.findViewById(R.id.countdown_timer);
         start = view.findViewById(R.id.start);
         pause = view.findViewById(R.id.pause);
         reset = view.findViewById(R.id.reset);
         resume = view.findViewById(R.id.resume);
         startFocusTime = view.findViewById(R.id.focusTimeBtn);
-        a = this.getActivity();
 
+        // Setup NummberPickers for hours, minutes, and seconds
         hoursPicker = view.findViewById(R.id.hoursPicker);
         hoursPicker.setMinValue(0);
         hoursPicker.setMaxValue(99);
@@ -56,6 +58,7 @@ public class Timer extends Fragment {
         secondsPicker.setMinValue(0);
         secondsPicker.setMaxValue(59);
 
+        // Toggle focus mode button functionality
         startFocusTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +75,7 @@ public class Timer extends Fragment {
             }
         });
 
+        // Button to start the timer
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +86,7 @@ public class Timer extends Fragment {
                 long minutes = minutesPicker.getValue();
                 long seconds = secondsPicker.getValue();
                 timeLeftInMillis = (hours * 3600000) + (minutes * 60000) + (seconds * 1000);
-                startTime(timeLeftInMillis);
+                startTime(timeLeftInMillis); // Start a new timer with the specified time
             }
         });
 
@@ -110,6 +114,7 @@ public class Timer extends Fragment {
         return view;
     }
 
+    // Start the timer with the specified duration
     private void startTime(long time) {
         if (focusTimeEnabled) {
             GlobalData.user.inFocusMode = true;
@@ -119,7 +124,7 @@ public class Timer extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
-                updateCountDownText();
+                updateCountDownText(); // Update the timer text
             }
 
             @Override
@@ -129,6 +134,7 @@ public class Timer extends Fragment {
                 }
                 countdownTimer.setText("00:00:00");
 
+                // Notify user time is up and it plays the alarm sound
                 Toast.makeText(a, "Break Time", Toast.LENGTH_SHORT).show();
                 MediaPlayer alarm = MediaPlayer.create(a, R.raw.summitalarm);
                 alarm.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -140,6 +146,7 @@ public class Timer extends Fragment {
                 alarm.start();
             }
         }.start();
+
     }
 
     private void pauseTimer() {
@@ -148,10 +155,12 @@ public class Timer extends Fragment {
         }
     }
 
+    // Resume the timer from where it was paused
     private void resumeTimer() {
         startTime(timeLeftInMillis);
     }
 
+    // Reset the timer to the initial state
     private void resetTimer() {
         if (timer != null) {
             timer.cancel();
@@ -160,6 +169,7 @@ public class Timer extends Fragment {
         timeLeftInMillis = 0;
     }
 
+    // Format and update the countdown timer text
     private void updateCountDownText() {
         int hours = (int) (timeLeftInMillis / 1000) / 3600;
         int minutes = (int) ((timeLeftInMillis / 1000) % 3600) / 60;
