@@ -1,5 +1,6 @@
 package com.brainset.ocr;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -23,6 +24,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -65,7 +67,9 @@ public class Gallery extends AppCompatActivity {
     FbData db = new FbData();
     // Declaration of UI components
     EditText editText; // Display text extracted or any message
-    Button imageBTN, speechBTN, clearBTN, pauseBTN, focusBTN, saveBTN, resumeBTN; // Buttons for various functionalities
+    Button imageBTN, speechBTN, clearBTN, pauseBTN, focusBTN, saveBTN, resumeBTN, buttonCancel, buttonSave; // Buttons for various functionalities
+
+    Dialog dialog;
 
     // Declaration of variables for processing
     InputImage inputImage; // Holds the image to process
@@ -121,9 +125,6 @@ public class Gallery extends AppCompatActivity {
         resumeBTN = findViewById(R.id.resume);
 
 
-
-
-
         // Setting onClick listeners for buttons to handle user interactions
 
         resumeBTN.setOnClickListener(new View.OnClickListener() {
@@ -146,51 +147,55 @@ public class Gallery extends AppCompatActivity {
             }
         });
 
-        saveBTN.setOnClickListener(new View.OnClickListener() { //button to save scan
+        saveBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if an image has been selected
-                if (inputImage != null){
-                    LayoutInflater inflater = (LayoutInflater)
-                            getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View popupView = inflater.inflate(R.layout.save_popup, null);
+                // Check if an image has been selected
+                if (inputImage != null) {
+                    // Create the dialog
+                    Dialog dialog = new Dialog(Gallery.this);
+                    dialog.setContentView(R.layout.save_popup);
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.save_popupp));
+                    dialog.setCancelable(false);
 
-                    // create the popup window
-                    int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    boolean focusable = true; // lets taps outside the popup also dismiss it
-                    final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                    // Find views in the dialog layout
+                    EditText eScanName = dialog.findViewById(R.id.editTextSaveName);
+                    Button buttonSave = dialog.findViewById(R.id.buttonSave);
+                    Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
-                    // show the popup window
-                    // which view you pass in doesn't matter, it is only used for the window tolken
-                    popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-                    //set objects on pop up
-                    Button save = popupWindow.getContentView().findViewById(R.id.buttonSave);
-                    EditText eScanName = popupWindow.getContentView().findViewById(R.id.editTextSaveName);
-                    save.setOnClickListener(new View.OnClickListener() {
+                    buttonCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view) {
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    buttonSave.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Get the scan name from the EditText
                             String scanName = eScanName.getText().toString();
+                            // Get the bitmap from inputImage
                             Bitmap image = inputImage.getBitmapInternal();
+                            // Save the bitmap to a file
                             File imageFile = saveBitmap(image, scanName);
 
+                            // Create a new Scans object
                             Scans scan = new Scans(scanName, imageFile);
+                            // Update user's scans
                             gd.user.scans.put(scanName, scan);
                             db.setUserScans(gd.user, gd.user.scans);
+                            // Save the scan
                             gd.user.scans.get(scanName).save(scanName);
-                            popupWindow.dismiss();
-                        }
-                    });
-                    // dismiss the popup window when touched
-                    popupView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            popupWindow.dismiss();
-                            return true;
+
+                            // Dismiss the dialog
+                            dialog.dismiss();
                         }
                     });
 
+                    // Show the dialog
+                    dialog.show();
                 }
             }
         });

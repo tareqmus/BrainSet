@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F1F3"
     tools:context=".CreateAcc">
     <EditText
         android:id="@+id/editTextUsr"
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:ems="10"
+        android:textColor="#333333"
         android:inputType="text"
         android:hint="Username" />
 
@@ -21,8 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:hint="Password"
+        android:textColor="#333333"
         android:layout_below="@+id/editTextUsr"/>
 
     <EditText
@@ -31,8 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:hint="Confirm Password"
+        android:textColor="#333333"
         android:layout_below="@+id/editTextPass"/>
 
     <Button

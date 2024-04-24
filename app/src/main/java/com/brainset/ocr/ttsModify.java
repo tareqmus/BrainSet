@@ -22,7 +22,7 @@ import java.util.Locale;
 public class ttsModify extends Fragment implements TextToSpeech.OnInitListener {
     View view;
     Activity a;
-    private Button speak;
+    private Button speak, save;
     private ImageView backArrow;
     private TextToSpeech engine;
     private EditText editText;
@@ -37,7 +37,7 @@ public class ttsModify extends Fragment implements TextToSpeech.OnInitListener {
         a = this.getActivity();
         FocusMode.checkFocusMode(a);
 
-
+        save = (Button) view.findViewById(R.id.saveVoice);
         speak = (Button) view.findViewById(R.id.speak);
         editText = (EditText) view.findViewById(R.id.sentence);
         seekSpeed = (SeekBar) view.findViewById(R.id.seekSpeed);
@@ -46,6 +46,12 @@ public class ttsModify extends Fragment implements TextToSpeech.OnInitListener {
 
         engine = new TextToSpeech(this.getContext(), this);
 
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         speak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +100,6 @@ public class ttsModify extends Fragment implements TextToSpeech.OnInitListener {
         engine.setPitch(pitchRate);
         engine.setSpeechRate(speedRate);
         engine.speak(editText.getText().toString(), TextToSpeech.QUEUE_FLUSH, null, null);
-        Toast.makeText(this.getContext(), "Your device is speaking...", Toast.LENGTH_SHORT).show();
 
     }
 

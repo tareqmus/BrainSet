@@ -7,8 +7,17 @@
         <item name="android:windowBackground">#F0F1F3</item>
         <!-- Set the accent color -->
         <item name="colorAccent">#FF9E00</item>
+
+        <item name="android:statusBarColor">#F0F1F3</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+
     </style>
 
+    <style name="bottombar1">
+        <item name="android:navigationBarColor">@android:color/white</item>
+
+    </style>
 
 
     <style name="Theme.OCR" parent="Base.Theme.OCR" />

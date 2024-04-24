@@ -78,11 +78,24 @@
                 android:id="@+id/speak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/seekSpeed"
+                android:layout_marginTop="60dp"
+                android:layout_marginStart="60dp"
+                android:text="Speak"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/saveVoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
-                android:text="Speak"
+                android:layout_marginStart="60dp"
+                android:text="Save Voice"
                 android:textColor="@color/black"
-                android:layout_below="@id/seekSpeed"/>
+                android:layout_below="@+id/seekSpeed"
+                android:layout_toEndOf="@+id/speak"/>
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
